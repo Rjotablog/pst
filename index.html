@@ -237,26 +237,38 @@
             font-weight: 600;
         }
 
-        /* Logo container - usando logo.png */
+        /* Logo container - IGUAL AO ORIGINAL (sem círculo) */
         .logo-container {
-            display: flex;
-            justify-content: center;
             margin-bottom: 20px;
             position: relative;
+            display: flex;
+            justify-content: center;
         }
-
+        
         #logo {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: 0 20px 40px -10px rgba(32, 201, 151, 0.4);
-            border: 2px solid rgba(32, 201, 151, 0.3);
-            transition: transform 0.3s ease;
+            width: 160px; /* Mesmo tamanho do original */
+            filter: drop-shadow(0 5px 15px rgba(32, 201, 151, 0.4));
+            transition: all 0.4s ease;
+            border-radius: 0; /* SEM BORDA ARREDONDADA */
+            object-fit: contain; /* Mantém a proporção original */
         }
-
-        #logo:hover {
-            transform: scale(1.05);
+        
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(32, 201, 151, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 3s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); }
+            100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         h1 {
@@ -501,8 +513,7 @@
             }
 
             #logo {
-                width: 80px;
-                height: 80px;
+                width: 140px; /* Ajuste responsivo */
             }
 
             .btn {
@@ -523,7 +534,7 @@
     <div class="main-container">
         <!-- Menu Lateral - ESQUERDA -->
         <div class="side-menu">
-            <!-- Instagram (sem imagem, apenas ícone) -->
+            <!-- Instagram -->
             <div class="menu-item" onclick="window.open('https://www.instagram.com/rjotablog/?hl=en', '_blank')">
                 <div class="menu-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -565,10 +576,11 @@
             </div>
         </div>
 
-        <!-- Card Principal - CENTRO (com logo.png) -->
+        <!-- Card Principal - CENTRO (com logo IGUAL ao original) -->
         <div class="main-card">
             <div class="logo-container">
                 <img id="logo" src="logo.png" alt="Logo PassiTech" title="PassiTech">
+                <div class="logo-glow"></div> <!-- Efeito de brilho atrás da logo -->
             </div>
 
             <h1>Bem-vindo à<br>Plataforma Exclusiva</h1>
