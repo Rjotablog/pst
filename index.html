@@ -3,1327 +3,853 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Plataforma de downloads exclusivos da PassiTech">
-    <title>PassiTech - Plataforma de Downloads</title>
+    <title>PassiTech Platform | Acesso Exclusivo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dark-bg: #1a1a1a;
-            --darker-bg: #121212;
-            --primary-green: #2ecc71;
-            --primary-hover: #27ae60;
-            --secondary-green: #1abc9c;
-            --text-light: #ecf0f1;
-            --text-muted: #bdc3c7;
-            --card-bg: rgba(30, 30, 30, 0.85);
-            --card-border: rgba(46, 204, 113, 0.3);
-            --accent-blue: #3498db;
-            --accent-blue-dark: #2980b9;
-            --accent-red: #e74c3c;
-            --accent-red-dark: #c0392b;
-            --accent-yellow: #f1c40f;
-            --accent-yellow-dark: #f39c12;
-            --accent-purple: #9b59b6;
-            --accent-purple-dark: #8e44ad;
-            --shadow-color: rgba(0, 0, 0, 0.4);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0F;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px;
-            line-height: 1.6;
+            padding: 20px;
             position: relative;
             overflow: hidden;
+            color: #fff;
         }
-        
-        .color-wave {
+
+        /* Background com gradiente elegante */
+        .gradient-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(135deg, 
-                    var(--accent-blue) 0%, 
-                    var(--accent-blue-dark) 33%, 
-                    var(--accent-red) 33%, 
-                    var(--accent-red-dark) 66%, 
-                    var(--accent-yellow) 66%, 
-                    var(--accent-yellow-dark) 100%);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
+            background: radial-gradient(circle at 20% 50%, rgba(32, 201, 151, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+                        linear-gradient(135deg, #0A0A0F 0%, #1A1A24 100%);
             z-index: -2;
-            opacity: 0.4;
-            filter: blur(8px);
         }
-        
-        .dark-overlay {
+
+        .noise-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.85) 0%, rgba(18, 18, 18, 0.9) 100%);
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wMjUiIC8+PC9zdmc+');
+            opacity: 0.4;
             z-index: -1;
+            pointer-events: none;
         }
-        
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .instagram-section {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+
+        /* Container principal - Layout ajustado */
+        .main-container {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            z-index: 100;
-            animation: slideInLeft 1s ease-out;
+            justify-content: space-between;
+            max-width: 1300px;
+            width: 100%;
+            height: fit-content;
+            position: relative;
         }
-        
+
+        /* Menu Lateral - Centralizado no canto esquerdo */
+        .side-menu {
+            width: 280px;
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 24px 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+            animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            height: fit-content;
+            margin-left: 20px;
+        }
+
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-100px) translateY(-50%);
+                transform: translateX(-30px);
             }
             to {
                 opacity: 1;
-                transform: translateX(0) translateY(-50%);
+                transform: translateX(0);
             }
         }
-        
-        .instagram-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent-purple);
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.5);
-            transition: all 0.4s ease;
-        }
-        
-        .instagram-logo:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(155, 89, 182, 0.7);
-        }
-        
-        .instagram-btn {
-            padding: 12px 20px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-        
-        .instagram-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(220, 39, 67, 0.6);
-        }
-        
-        .instagram-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .instagram-icon {
-            width: 18px;
-            height: 18px;
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-        }
-        
-        .servicos-remotos {
-            background: linear-gradient(45deg, rgba(52, 152, 219, 0.2), rgba(155, 89, 182, 0.2));
-            border: 1px solid var(--accent-blue);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-            max-width: 250px;
-            animation: fadeIn 1s ease-out 0.5s both;
-        }
-        
-        .servicos-remotos h4 {
-            color: var(--accent-blue);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .servicos-remotos p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.4;
-            margin-bottom: 5px;
-        }
-        
-        .servicos-remotos .preco {
-            color: var(--primary-green);
-            font-weight: 700;
-            font-size: 1rem;
-            text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
-        }
-        
-        .contador-visitas {
-            background: linear-gradient(45deg, rgba(231, 76, 60, 0.2), rgba(241, 196, 15, 0.2));
-            border: 1px solid var(--accent-red);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-top: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
-            max-width: 280px;
-            animation: fadeIn 1s ease-out 1s both;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .contador-visitas::before {
-            content: '';
+
+        /* Card Principal - Centralizado no meio */
+        .main-card {
+            width: 560px;
+            background: rgba(20, 20, 28, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 48px;
+            padding: 32px 40px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            height: fit-content;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.05) 50%, 
-                transparent 100%);
-            z-index: 1;
-            pointer-events: none;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        
-        .contador-visitas h4 {
-            color: var(--accent-red);
-            margin-bottom: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .contador-numero {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--accent-yellow);
-            text-shadow: 0 0 15px rgba(241, 196, 15, 0.8);
-            margin: 8px 0;
-            font-family: 'Poppins', monospace;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .contador-texto {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            line-height: 1.4;
-            margin-top: 8px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .contador-texto span {
-            color: var(--primary-green);
-            font-weight: 600;
-        }
-        
-        .contador-visitas.online {
-            border-color: var(--primary-green);
-            background: linear-gradient(45deg, rgba(46, 204, 113, 0.2), rgba(52, 152, 219, 0.2));
-            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
-        }
-        
-        .contador-visitas.online h4 {
-            color: var(--primary-green);
-        }
-        
-        .live-badge {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--accent-red), var(--accent-red-dark));
-            color: white;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 5px;
-            animation: pulseLive 1.5s infinite;
-            vertical-align: middle;
-        }
-        
-        @keyframes pulseLive {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-        
-        @keyframes fadeIn {
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translate(-50%, 20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translate(-50%, 0);
             }
         }
-        
-        .subscribe-screen {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 35px 30px;
-            box-shadow: 0 20px 50px var(--shadow-color);
-            backdrop-filter: blur(12px);
-            animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            text-align: center;
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        
-        .subscribe-screen::before {
+
+        .menu-item:hover {
+            background: rgba(32, 201, 151, 0.1);
+            border-color: rgba(32, 201, 151, 0.3);
+            transform: translateX(5px);
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(32, 201, 151, 0.2), rgba(0, 122, 255, 0.2));
+            border-radius: 14px;
+            color: #20C997;
+        }
+
+        .menu-content h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2px;
+        }
+
+        .menu-content p {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        /* Card do Contador - Estilo Dashboard */
+        .stats-card {
+            background: linear-gradient(135deg, rgba(32, 201, 151, 0.15), rgba(0, 122, 255, 0.15));
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, 
-                var(--accent-blue), 
-                var(--accent-red), 
-                var(--accent-yellow));
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(32, 201, 151, 0.5), rgba(0, 122, 255, 0.5), transparent);
         }
-        
-        .subscribe-screen::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
-            z-index: -1;
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
         }
-        
+
+        .stats-header h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .live-badge {
+            background: linear-gradient(90deg, #20C997, #007AFF);
+            padding: 4px 8px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(32, 201, 151, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #20C997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 10px;
+            font-family: 'Inter', monospace;
+        }
+
+        .counter-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .counter-details span {
+            color: #20C997;
+            font-weight: 600;
+        }
+
         .logo-container {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
             position: relative;
-            display: inline-block;
         }
-        
-        #logo {
-            width: 160px;
-            filter: drop-shadow(0 5px 15px rgba(46, 204, 113, 0.4));
-            transition: all 0.4s ease;
-        }
-        
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(46, 204, 113, 0.4) 0%, transparent 70%);
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #20C997, #007AFF);
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px -10px rgba(32, 201, 151, 0.4);
+            position: relative;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #20C997, #007AFF);
+            opacity: 0.5;
+            filter: blur(15px);
             z-index: -1;
-            animation: pulse 3s infinite alternate;
         }
-        
-        @keyframes pulse {
-            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.95); }
-            100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.1); }
+
+        .logo span {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
         }
-        
+
         h1 {
-            color: var(--primary-green);
-            margin-bottom: 15px;
             font-size: 1.8rem;
             font-weight: 700;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            line-height: 1.3;
+            text-align: center;
+            background: linear-gradient(135deg, #fff, #20C997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.2;
         }
-        
+
         .description {
-            margin-bottom: 25px;
-            font-size: 1rem;
-            color: var(--text-light);
-            line-height: 1.6;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
-        .btn-container {
-            position: relative;
-            margin: 15px 0;
-        }
-        
-        .btn {
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            display: inline-flex;
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            width: 36px;
+            height: 36px;
+            border-radius: 36px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: rgba(32, 201, 151, 0.2);
+            border-color: #20C997;
+            color: #20C997;
+            box-shadow: 0 0 20px rgba(32, 201, 151, 0.3);
+        }
+
+        .step.completed {
+            background: #20C997;
+            border-color: #20C997;
+            color: white;
+        }
+
+        .step-line {
+            width: 50px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step-line.completed {
+            background: #20C997;
+        }
+
+        /* Botões modernos com barra de progresso */
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
-            width: 100%;
-            z-index: 1;
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-hover) 100%);
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
         }
-        
-        .btn.secondary {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-dark) 100%);
-        }
-        
-        .btn.completed {
-            background: linear-gradient(135deg, var(--secondary-green) 0%, #16a085 100%);
-        }
-        
-        .btn::before {
-            content: '';
+
+        /* Barra de progresso */
+        .progress-bar {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
-            width: 0;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.15) 0%, 
-                rgba(255, 255, 255, 0.05) 100%);
-            transition: width 10s linear;
-            z-index: -1;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #20C997, #007AFF);
+            transition: width 1s linear;
+            box-shadow: 0 0 10px rgba(32, 201, 151, 0.5);
         }
-        
-        .btn.processing::before {
-            width: 100%;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #20C997, #0f8f6c);
+            border: none;
+            box-shadow: 0 10px 20px -5px rgba(32, 201, 151, 0.4);
         }
-        
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #007AFF, #0051b3);
+            border: none;
+            box-shadow: 0 10px 20px -5px rgba(0, 122, 255, 0.4);
+        }
+
         .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -8px rgba(32, 201, 151, 0.5);
         }
-        
-        .btn.secondary:hover {
-            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.5);
-        }
-        
+
         .btn:active {
-            transform: translateY(1px);
+            transform: translateY(0);
         }
-        
-        .btn:disabled {
-            background: #555 !important;
-            cursor: not-allowed !important;
-            transform: none !important;
-            box-shadow: none !important;
+
+        .btn.completed {
+            background: linear-gradient(135deg, #20C997, #0f8f6c);
+            opacity: 0.9;
+            cursor: default;
         }
-        
-        .icon {
+
+        .btn.completed:hover {
+            transform: none;
+        }
+
+        .btn.completed .progress-bar {
+            display: none;
+        }
+
+        .btn.processing {
+            cursor: wait;
+        }
+
+        .btn-icon {
             width: 20px;
             height: 20px;
-            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
-            transition: transform 0.3s ease;
+            fill: currentColor;
         }
-        
-        .countdown {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+
+        .countdown-badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
             font-weight: 600;
-            opacity: 0;
-            transition: all 0.3s ease;
+            margin-left: 5px;
+            min-width: 45px;
+            text-align: center;
         }
-        
-        .processing .countdown {
-            opacity: 1;
-        }
-        
+
         .note {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 16px;
             line-height: 1.5;
         }
-        
-        .progress-container {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+
+        .note strong {
+            color: #20C997;
+            font-weight: 600;
         }
-        
-        .progress-step {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #555;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+
+        /* Container de confetes */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
-        
-        .progress-step.active {
-            background: var(--accent-blue);
-        }
-        
-        .progress-step.completed {
-            background: var(--primary-green);
-        }
-        
-        .progress-line {
-            width: 40px;
-            height: 3px;
-            background: #555;
-            transition: all 0.3s ease;
-        }
-        
-        .progress-line.completed {
-            background: var(--primary-green);
-        }
-        
+
         .confetti {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             opacity: 0;
-            z-index: 10;
-            animation: confettiFall 5s ease-out forwards;
-            background: linear-gradient(45deg, 
-                var(--primary-green), 
-                var(--accent-blue), 
-                var(--accent-yellow), 
-                var(--accent-red));
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            animation: confetti 4s ease-out forwards;
         }
-        
-        @keyframes confettiFall {
+
+        @keyframes confetti {
             0% {
-                transform: translateY(-100px) rotate(0deg) scale(1);
+                transform: translateY(-10vh) rotate(0deg);
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(1080deg) scale(0.5);
+                transform: translateY(100vh) rotate(720deg);
                 opacity: 0;
             }
         }
-        
-        .confetti.star {
-            clip-path: polygon(
-                50% 0%,
-                61% 35%,
-                98% 35%,
-                68% 57%,
-                79% 91%,
-                50% 70%,
-                21% 91%,
-                32% 57%,
-                2% 35%,
-                39% 35%
-            );
-        }
-        
-        .confetti.triangle {
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-        
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                justify-content: center;
+                gap: 20px;
             }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-        
-        @keyframes fall {
-            0% {
-                transform: translateY(-10px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .instagram-section {
+
+            .main-card {
                 position: static;
                 transform: none;
-                flex-direction: row;
-                justify-content: center;
-                margin-bottom: 20px;
-                animation: fadeInUp 1s ease-out;
+                margin: 0 auto;
             }
-            
-            .instagram-logo {
-                width: 60px;
-                height: 60px;
+
+            .side-menu {
+                margin-left: 0;
+                width: 100%;
+                max-width: 560px;
             }
-            
-            .instagram-btn {
-                font-size: 0.8rem;
-                padding: 10px 16px;
-            }
-            
-            .servicos-remotos, .contador-visitas {
-                max-width: 100%;
-                margin-top: 10px;
+
+            body {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                align-items: flex-start;
             }
         }
-        
-        @media (max-width: 480px) {
-            .subscribe-screen { 
-                padding: 25px 20px; 
+
+        @media (max-width: 640px) {
+            .main-card {
+                padding: 24px 20px;
+                border-radius: 32px;
+                width: 100%;
             }
-            
-            h1 { font-size: 1.6rem; }
-            
-            .btn { 
-                padding: 14px 20px; 
-                font-size: 1rem; 
-            }
-            
-            #logo { width: 140px; }
-            
-            .logo-glow { 
-                width: 130px; 
-                height: 130px; 
-            }
-            
-            .description {
-                font-size: 0.9rem;
-            }
-            
-            .instagram-section {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .servicos-remotos, .contador-visitas {
-                padding: 12px;
-                margin-top: 8px;
-            }
-            
-            .servicos-remotos h4, .contador-visitas h4 {
-                font-size: 1rem;
-            }
-            
-            .servicos-remotos p, .contador-texto {
-                font-size: 0.85rem;
-            }
-            
-            .contador-numero {
-                font-size: 1.8rem;
-            }
-        }
-        
-        @media (max-height: 700px) {
-            .subscribe-screen {
-                padding: 25px 20px;
-            }
-            
-            .logo-container {
-                margin-bottom: 15px;
-            }
-            
+
             h1 {
-                margin-bottom: 10px;
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
-            
-            .description {
-                margin-bottom: 20px;
-                font-size: 0.9rem;
+
+            .logo {
+                width: 70px;
+                height: 70px;
             }
-            
-            .btn-container {
-                margin: 12px 0;
+
+            .logo span {
+                font-size: 1.5rem;
             }
-            
-            .servicos-remotos, .contador-visitas {
-                margin-top: 10px;
-                padding: 12px;
+
+            .btn {
+                padding: 14px 20px;
+            }
+
+            .step-line {
+                width: 30px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="color-wave"></div>
-    <div class="dark-overlay"></div>
-    
-    <!-- Seção do Instagram -->
-    <div class="instagram-section">
-        <img src="logo2.png" alt="RJOTA Blog" class="instagram-logo">
-        <a href="https://www.instagram.com/rjotablog/?hl=en" target="_blank" class="instagram-btn">
-            <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            SIGA-ME NO INSTAGRAM
-        </a>
-        
-        <!-- Serviços Remotos -->
-        <div class="servicos-remotos">
-            <h4>Serviços Remotos</h4>
-            <p>Para serviços remoto particulares</p>
-            <p>só chamar no Instagram!</p>
-            <p class="preco">Preço a negociar!</p>
+    <div class="gradient-bg"></div>
+    <div class="noise-overlay"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="main-container">
+        <!-- Menu Lateral - ESQUERDA (centralizado verticalmente) -->
+        <div class="side-menu">
+            <!-- Instagram -->
+            <div class="menu-item" onclick="window.open('https://www.instagram.com/rjotablog/?hl=en', '_blank')">
+                <div class="menu-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 11.37C16.1234 12.2022 15.9813 13.0522 15.5938 13.799C15.2063 14.5458 14.5931 15.1514 13.8416 15.5297C13.0901 15.9079 12.2384 16.0396 11.4078 15.9059C10.5771 15.7722 9.80976 15.3801 9.21484 14.7852C8.61992 14.1902 8.22782 13.4229 8.09411 12.5922C7.9604 11.7616 8.09207 10.9099 8.47034 10.1584C8.84861 9.40685 9.45419 8.79366 10.201 8.40616C10.9478 8.01866 11.7978 7.87659 12.63 8C13.4789 8.12588 14.2649 8.52146 14.8717 9.1283C15.4785 9.73515 15.8741 10.5211 16 11.37Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.5 6.5H17.51" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="menu-content">
+                    <h4>Instagram</h4>
+                    <p>@rjotablog</p>
+                </div>
+            </div>
+
+            <!-- Serviços Remotos -->
+            <div class="menu-item">
+                <div class="menu-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12L12 16M12 8V8.5M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="menu-content">
+                    <h4>Serviços Remotos</h4>
+                    <p>Consultoria • Suporte</p>
+                </div>
+            </div>
+
+            <!-- Contador de Visitas -->
+            <div class="stats-card">
+                <div class="stats-header">
+                    <h4>Visitantes ao vivo</h4>
+                    <span class="live-badge">LIVE</span>
+                </div>
+                <div class="counter-number" id="contadorNumero">1.847</div>
+                <div class="counter-details">
+                    <span id="usuariosOnline">12</span> online agora
+                    <span>⬆️ +2.3%</span>
+                </div>
+            </div>
         </div>
-        
-        <!-- Contador de Visitas em Tempo Real -->
-        <div class="contador-visitas" id="contadorVisitas">
-            <h4>VISITAS AO VIVO <span class="live-badge">LIVE</span></h4>
-            <div class="contador-numero" id="contadorNumero">0</div>
-            <p class="contador-texto">
-                <span id="usuariosOnline">0</span> usuários online agora<br>
-                Total: <span id="totalVisitas">0</span> visitas
+
+        <!-- Card Principal - CENTRO -->
+        <div class="main-card">
+            <div class="logo-container">
+                <div class="logo">
+                    <span>P</span>
+                </div>
+            </div>
+
+            <h1>Bem-vindo à<br>Plataforma Exclusiva</h1>
+
+            <p class="description">
+                Para acessar nossos conteúdos premium, inscreva-se nos canais do YouTube. 
+                É rápido e gratuito!
+            </p>
+
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="step" id="step1">1</div>
+                <div class="step-line" id="line1"></div>
+                <div class="step" id="step2">2</div>
+            </div>
+
+            <!-- Botões de Inscrição com Barra de Progresso -->
+            <button id="subscribeButton1" class="btn btn-primary">
+                <div class="progress-bar" id="progressBar1"></div>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                <span id="btnText1">Canal PassiTech</span>
+                <span class="countdown-badge" id="countdown1">10s</span>
+            </button>
+
+            <button id="subscribeButton2" class="btn btn-secondary">
+                <div class="progress-bar" id="progressBar2"></div>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+                <span id="btnText2">Canal RJOTAFN</span>
+                <span class="countdown-badge" id="countdown2">10s</span>
+            </button>
+
+            <p class="note">
+                Após confirmar as duas inscrições, você será redirecionado em <strong>10 segundos</strong>
             </p>
         </div>
     </div>
-    
-    <div class="subscribe-screen">
-        <div class="logo-container">
-            <img id="logo" src="logo.png" alt="Logo PassiTech" title="PassiTech">
-            <div class="logo-glow"></div>
-        </div>
-        
-        <h1>Bem-vindo à Plataforma<br>Exclusiva PassiTech</h1>
-        
-        <p class="description">
-            Para acessar nossos conteúdos premium, inscreva-se nos nossos canais do YouTube. 
-            É rápido, gratuito e nos ajuda a criar mais materiais de qualidade para você!
-        </p>
-        
-        <div class="progress-container">
-            <div class="progress-step" id="step1">1</div>
-            <div class="progress-line" id="line1"></div>
-            <div class="progress-step" id="step2">2</div>
-        </div>
-        
-        <div class="btn-container">
-            <button id="subscribeButton1" class="btn">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                </svg>
-                <span id="btnText1">Inscreva-se no Canal PassiTech</span>
-                <span class="countdown" id="countdown1">10s</span>
-            </button>
-        </div>
-        
-        <div class="btn-container">
-            <button id="subscribeButton2" class="btn secondary">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                </svg>
-                <span id="btnText2">Inscreva-se no Canal RJOTAFN</span>
-                <span class="countdown" id="countdown2">10s</span>
-            </button>
-        </div>
-        
-        <p class="note">
-            Após confirmar suas inscrições em ambos os canais, você será redirecionado automaticamente 
-            para a plataforma de downloads em <strong>10 segundos</strong>.
-        </p>
-    </div>
 
     <script>
-        // ============================================
-        // SISTEMA AVANÇADO DE CONTADOR DE VISITAS EM TEMPO REAL
-        // ============================================
-        
-        class ContadorVisitas {
+        // Sistema de Contador de Visitas
+        class VisitCounter {
             constructor() {
-                // Armazenamento local melhorado
-                this.totalVisitas = 0;
-                this.usuariosOnline = 1;
-                this.usuariosAtivos = new Map();
-                this.marcoAtual = 0;
-                this.intervalos = [];
-                this.sessaoID = this.gerarSessaoID();
+                this.total = 1847;
+                this.online = 12;
+                this.updateDisplay();
                 
-                // Elementos DOM
-                this.contadorNumero = document.getElementById('contadorNumero');
-                this.usuariosOnlineEl = document.getElementById('usuariosOnline');
-                this.totalVisitasEl = document.getElementById('totalVisitas');
-                this.contadorVisitasEl = document.getElementById('contadorVisitas');
-                
-                // Inicializar
-                this.carregarDados();
-                this.iniciar();
-                this.iniciarAtualizacaoAutomatica();
+                setInterval(() => {
+                    this.online = Math.floor(Math.random() * 15) + 5;
+                    this.total += Math.floor(Math.random() * 3);
+                    this.updateDisplay();
+                }, 5000);
             }
-            
-            gerarSessaoID() {
-                return 'sessao_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+            updateDisplay() {
+                document.getElementById('contadorNumero').textContent = this.formatNumber(this.total);
+                document.getElementById('usuariosOnline').textContent = this.online;
             }
-            
-            formatarNumero(num) {
+
+            formatNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             }
-            
-            carregarDados() {
-                // Carregar do localStorage ou iniciar com valor base
-                const visitasSalvas = localStorage.getItem('passitech_contador_global');
-                const usuariosAtivos = localStorage.getItem('passitech_usuarios_ativos');
-                const ultimoReset = localStorage.getItem('passitech_ultimo_reset');
-                
-                const hoje = new Date().toDateString();
-                
-                if (ultimoReset !== hoje) {
-                    // Novo dia, resetar contador de sessões ativas
-                    localStorage.setItem('passitech_ultimo_reset', hoje);
-                    localStorage.setItem('passitech_usuarios_ativos', JSON.stringify({}));
-                }
-                
-                if (visitasSalvas) {
-                    this.totalVisitas = parseInt(visitasSalvas);
-                } else {
-                    // Valor inicial realista
-                    this.totalVisitas = Math.floor(Math.random() * 500) + 1500;
-                    this.salvarDados();
-                }
-                
-                if (usuariosAtivos) {
-                    try {
-                        const usuarios = JSON.parse(usuariosAtivos);
-                        const agora = Date.now();
-                        
-                        // Filtrar usuários ativos nos últimos 5 minutos
-                        for (const [id, timestamp] of Object.entries(usuarios)) {
-                            if (agora - timestamp < 5 * 60 * 1000) {
-                                this.usuariosAtivos.set(id, timestamp);
-                            }
-                        }
-                        
-                        this.usuariosOnline = this.usuariosAtivos.size;
-                    } catch (e) {
-                        console.error('Erro ao carregar usuários ativos:', e);
-                    }
-                }
-                
-                // Adicionar usuário atual
-                this.usuariosAtivos.set(this.sessaoID, Date.now());
-                this.usuariosOnline = this.usuariosAtivos.size;
+        }
+
+        // Sistema de Confetes - APENAS QUANDO COMPLETAR AS DUAS INSCRIÇÕES
+        class ConfettiSystem {
+            constructor() {
+                this.container = document.getElementById('confettiContainer');
+                this.colors = ['#20C997', '#007AFF', '#FFD700', '#FF6B6B', '#9B59B6', '#FF8C42', '#6C5CE7', '#00D2D3', '#E84342', '#F368E0', '#FF9F43', '#10AC84'];
             }
-            
-            salvarDados() {
-                localStorage.setItem('passitech_contador_global', this.totalVisitas.toString());
+
+            // MUITOS confetes de uma vez
+            massiveExplosion() {
+                const totalConfetes = 300; // MUITOS confetes!
                 
-                const usuariosObj = {};
-                this.usuariosAtivos.forEach((timestamp, id) => {
-                    usuariosObj[id] = timestamp;
-                });
-                localStorage.setItem('passitech_usuarios_ativos', JSON.stringify(usuariosObj));
-            }
-            
-            atualizarContador() {
-                // Incrementar contador global
-                this.totalVisitas++;
-                
-                // Atualizar timestamp da sessão atual
-                this.usuariosAtivos.set(this.sessaoID, Date.now());
-                
-                // Limpar sessões expiradas (mais de 5 minutos)
-                const agora = Date.now();
-                for (const [id, timestamp] of this.usuariosAtivos.entries()) {
-                    if (agora - timestamp > 5 * 60 * 1000) {
-                        this.usuariosAtivos.delete(id);
-                    }
-                }
-                
-                this.usuariosOnline = this.usuariosAtivos.size;
-                
-                // Atualizar display
-                this.atualizarDisplay();
-                
-                // Salvar dados
-                this.salvarDados();
-                
-                // Verificar marcos
-                this.verificarMarcos();
-                
-                // Log para debug
-                console.log(`📊 Contador atualizado: ${this.formatarNumero(this.totalVisitas)} visitas, ${this.usuariosOnline} online`);
-            }
-            
-            atualizarDisplay() {
-                this.contadorNumero.textContent = this.formatarNumero(this.totalVisitas);
-                this.usuariosOnlineEl.textContent = this.usuariosOnline;
-                this.totalVisitasEl.textContent = this.formatarNumero(this.totalVisitas);
-                
-                // Efeito visual
-                this.contadorNumero.style.transform = 'scale(1.1)';
-                setTimeout(() => {
-                    this.contadorNumero.style.transform = 'scale(1)';
-                }, 200);
-                
-                // Destaque quando muitos usuários online
-                if (this.usuariosOnline > 5) {
-                    this.contadorVisitasEl.classList.add('online');
-                } else {
-                    this.contadorVisitasEl.classList.remove('online');
-                }
-            }
-            
-            verificarMarcos() {
-                const marco = Math.floor(this.totalVisitas / 100) * 100;
-                
-                if (marco > this.marcoAtual && marco % 100 === 0) {
-                    this.marcoAtual = marco;
-                    this.celebrarMarco(marco);
-                }
-            }
-            
-            celebrarMarco(marco) {
-                console.log(`🎉 Marco alcançado: ${this.formatarNumero(marco)} visitas!`);
-                
-                // Efeito visual
-                this.contadorVisitasEl.style.boxShadow = '0 0 25px rgba(46, 204, 113, 0.9)';
-                this.contadorVisitasEl.style.borderColor = '#2ecc71';
-                
-                setTimeout(() => {
-                    this.contadorVisitasEl.style.boxShadow = '0 5px 15px rgba(231, 76, 60, 0.3)';
-                    this.contadorVisitasEl.style.borderColor = 'var(--accent-red)';
-                }, 1500);
-                
-                // Criar confetes
-                this.criarConfetes();
-            }
-            
-            criarConfetes() {
-                const cores = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6'];
-                
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < totalConfetes; i++) {
                     setTimeout(() => {
-                        const confete = document.createElement('div');
-                        confete.style.position = 'fixed';
-                        confete.style.width = '12px';
-                        confete.style.height = '12px';
-                        confete.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
-                        confete.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                        confete.style.left = Math.random() * 100 + 'vw';
-                        confete.style.top = '-20px';
-                        confete.style.zIndex = '9999';
-                        confete.style.animation = `fall ${1 + Math.random() * 1.5}s linear forwards`;
-                        
-                        document.body.appendChild(confete);
-                        
-                        setTimeout(() => confete.remove(), 2000);
-                    }, i * 50);
+                        this.createSingleConfetti();
+                    }, i * 10); // 10ms de intervalo = 3 segundos para todos caírem
                 }
-            }
-            
-            iniciarAtualizacaoAutomatica() {
-                // Atualizar contador a cada 30 segundos
-                setInterval(() => {
-                    this.atualizarContador();
-                }, 30000);
-                
-                // Atualizar usuários online a cada minuto
-                setInterval(() => {
-                    this.verificarUsuariosAtivos();
-                }, 60000);
-                
-                // Atualizar quando a página ganha foco
-                window.addEventListener('focus', () => {
-                    this.atualizarContador();
-                });
-                
-                // Atualizar antes de fechar a página
-                window.addEventListener('beforeunload', () => {
-                    this.atualizarContador();
-                });
-            }
-            
-            verificarUsuariosAtivos() {
-                const agora = Date.now();
-                let usuariosRemovidos = 0;
-                
-                for (const [id, timestamp] of this.usuariosAtivos.entries()) {
-                    if (agora - timestamp > 5 * 60 * 1000) {
-                        this.usuariosAtivos.delete(id);
-                        usuariosRemovidos++;
+
+                // Segunda leva depois de 1 segundo
+                setTimeout(() => {
+                    for (let i = 0; i < 200; i++) {
+                        setTimeout(() => {
+                            this.createSingleConfetti();
+                        }, i * 10);
                     }
-                }
-                
-                if (usuariosRemovidos > 0) {
-                    this.usuariosOnline = this.usuariosAtivos.size;
-                    this.atualizarDisplay();
-                    this.salvarDados();
-                }
-            }
-            
-            iniciar() {
-                // Primeira atualização
-                this.atualizarContador();
-                
-                // Animar contador
-                this.contadorNumero.style.animation = 'pulseCounter 2s infinite';
-                
-                // Atualizar a cada 15 segundos para simular atividade
-                setInterval(() => {
-                    if (Math.random() > 0.7) { // 30% de chance
-                        this.atualizarContador();
+                }, 1000);
+
+                // Terceira leva depois de 2 segundos
+                setTimeout(() => {
+                    for (let i = 0; i < 150; i++) {
+                        setTimeout(() => {
+                            this.createSingleConfetti();
+                        }, i * 10);
                     }
-                }, 15000);
+                }, 2000);
             }
-            
-            // Métodos públicos para controle
-            resetar() {
-                if (confirm('Tem certeza que deseja resetar o contador de visitas?')) {
-                    this.totalVisitas = 0;
-                    this.usuariosAtivos.clear();
-                    this.usuariosOnline = 1;
-                    this.salvarDados();
-                    this.atualizarDisplay();
-                    alert('Contador resetado com sucesso!');
-                }
-            }
-            
-            getEstatisticas() {
-                return {
-                    totalVisitas: this.totalVisitas,
-                    usuariosOnline: this.usuariosOnline,
-                    formatado: this.formatarNumero(this.totalVisitas),
-                    sessaoID: this.sessaoID
-                };
-            }
-        }
-        
-        // ============================================
-        // SISTEMA ORIGINAL DE INSCRIÇÃO
-        // ============================================
-        
-        // Elementos DOM
-        const subscribeBtn1 = document.getElementById('subscribeButton1');
-        const subscribeBtn2 = document.getElementById('subscribeButton2');
-        const btnText1 = document.getElementById('btnText1');
-        const btnText2 = document.getElementById('btnText2');
-        const countdown1 = document.getElementById('countdown1');
-        const countdown2 = document.getElementById('countdown2');
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        const line1 = document.getElementById('line1');
-        
-        // Estado das inscrições
-        let subscribedToChannel1 = false;
-        let subscribedToChannel2 = false;
-        
-        // Cores para os confetes
-        const confettiColors = [
-            '#2ecc71', '#3498db', '#e74c3c', 
-            '#f1c40f', '#9b59b6', '#1abc9c',
-            '#e91e63', '#00bcd4', '#ff5722'
-        ];
-        
-        // Obter link de download da URL
-        function getDownloadLink() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("link");
-        }
-        
-        // Atualizar progresso
-        function updateProgress() {
-            if (subscribedToChannel1) {
-                step1.classList.add('completed');
-                step1.classList.remove('active');
-                step2.classList.add('active');
-                line1.classList.add('completed');
-            }
-            
-            if (subscribedToChannel2) {
-                step2.classList.add('completed');
-                step2.classList.remove('active');
-            }
-            
-            // Verificar se ambas as inscrições foram feitas
-            if (subscribedToChannel1 && subscribedToChannel2) {
-                completeSubscription();
-            }
-        }
-        
-        // Criar efeito de confete melhorado
-        function createConfetti() {
-            const container = document.querySelector('body');
-            const confettiCount = 150;
-            
-            for (let i = 0; i < confettiCount; i++) {
+
+            createSingleConfetti() {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 
-                if (Math.random() > 0.7) {
-                    confetti.classList.add('star');
-                } else if (Math.random() > 0.5) {
-                    confetti.classList.add('triangle');
-                }
+                // Posição aleatória (espalhado por toda a tela)
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10%';
                 
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.background = confettiColors[
-                    Math.floor(Math.random() * confettiColors.length)
-                ];
+                // Cor aleatória
+                confetti.style.background = this.colors[Math.floor(Math.random() * this.colors.length)];
                 
-                const size = Math.random() * 15 + 5;
+                // Tamanho variado (alguns maiores para destaque)
+                const size = Math.random() * 20 + 5;
                 confetti.style.width = size + 'px';
                 confetti.style.height = size + 'px';
                 
-                const animationDuration = Math.random() * 3 + 3;
-                const animationDelay = Math.random() * 2;
-                
-                confetti.style.animationDelay = animationDelay + 's';
-                confetti.style.animationDuration = animationDuration + 's';
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                container.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), (animationDuration + animationDelay) * 1000);
-            }
-            
-            // Confetes maiores para destaque
-            for (let i = 0; i < 25; i++) {
-                const largeConfetti = document.createElement('div');
-                largeConfetti.className = 'confetti';
-                
-                if (Math.random() > 0.5) {
-                    largeConfetti.classList.add('star');
-                }
-                
-                largeConfetti.style.left = Math.random() * 100 + 'vw';
-                largeConfetti.style.background = confettiColors[
-                    Math.floor(Math.random() * confettiColors.length)
-                ];
-                
-                const size = Math.random() * 25 + 15;
-                largeConfetti.style.width = size + 'px';
-                largeConfetti.style.height = size + 'px';
-                
-                const animationDuration = Math.random() * 4 + 4;
-                const animationDelay = Math.random() * 1;
-                
-                largeConfetti.style.animationDelay = animationDelay + 's';
-                largeConfetti.style.animationDuration = animationDuration + 's';
-                largeConfetti.style.opacity = '0.9';
-                largeConfetti.style.boxShadow = '0 0 10px rgba(255,255,255,0.7)';
-                
-                container.appendChild(largeConfetti);
-                
-                setTimeout(() => largeConfetti.remove(), (animationDuration + animationDelay) * 1000);
-            }
-        }
-        
-        // Processo de inscrição no canal 1
-        function subscribeToChannel1() {
-            subscribeBtn1.classList.add('processing');
-            subscribeBtn1.disabled = true;
-            btnText1.textContent = 'Processando...';
-            
-            window.open("https://www.youtube.com/@PASSITECH?sub_confirmation=1", "_blank");
-            
-            let seconds = 10;
-            countdown1.textContent = seconds + 's';
-            
-            const timer = setInterval(() => {
-                seconds--;
-                countdown1.textContent = seconds + 's';
-                
-                if (seconds <= 0) {
-                    clearInterval(timer);
-                    subscribedToChannel1 = true;
-                    subscribeBtn1.classList.remove('processing');
-                    subscribeBtn1.classList.add('completed');
-                    btnText1.innerHTML = `
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                        </svg>
-                        Inscrição Confirmada!
-                    `;
-                    updateProgress();
-                }
-            }, 1000);
-        }
-        
-        // Processo de inscrição no canal 2
-        function subscribeToChannel2() {
-            subscribeBtn2.classList.add('processing');
-            subscribeBtn2.disabled = true;
-            btnText2.textContent = 'Processando...';
-            
-            window.open("https://www.youtube.com/@RJOTAFN?sub_confirmation=1", "_blank");
-            
-            let seconds = 10;
-            countdown2.textContent = seconds + 's';
-            
-            const timer = setInterval(() => {
-                seconds--;
-                countdown2.textContent = seconds + 's';
-                
-                if (seconds <= 0) {
-                    clearInterval(timer);
-                    subscribedToChannel2 = true;
-                    subscribeBtn2.classList.remove('processing');
-                    subscribeBtn2.classList.add('completed');
-                    btnText2.innerHTML = `
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                        </svg>
-                        Inscrição Confirmada!
-                    `;
-                    updateProgress();
-                }
-            }, 1000);
-        }
-        
-        // Finalizar inscrição
-        function completeSubscription() {
-            createConfetti();
-            
-            setTimeout(createConfetti, 800);
-            setTimeout(createConfetti, 1500);
-            
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100, 50, 100]);
-            }
-            
-            setTimeout(() => {
-                const downloadLink = getDownloadLink();
-                if (downloadLink) {
-                    window.location.href = decodeURIComponent(downloadLink);
+                // Formatos diferentes
+                const random = Math.random();
+                if (random < 0.3) {
+                    confetti.style.borderRadius = '50%'; // Redondo
+                } else if (random < 0.6) {
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)'; // Triângulo
+                } else if (random < 0.8) {
+                    confetti.style.borderRadius = '0'; // Quadrado
                 } else {
-                    alert("Inscrições confirmadas! O link de download será disponibilizado em breve.");
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'; // Estrela
                 }
-            }, 1500);
+                
+                // Velocidade de queda variável
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 0.5;
+                
+                confetti.style.animation = `confetti ${duration}s ease-out ${delay}s forwards`;
+                
+                this.container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), (duration + delay) * 1000);
+            }
         }
-        
-        // ============================================
-        // INICIALIZAÇÃO COMPLETA
-        // ============================================
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Inicializar contador de visitas
-            window.contador = new ContadorVisitas();
-            
-            // 2. Configurar event listeners originais
-            subscribeBtn1.addEventListener('click', subscribeToChannel1);
-            subscribeBtn2.addEventListener('click', subscribeToChannel2);
-            
-            // 3. Efeito hover no logo
-            const logo = document.getElementById('logo');
-            logo.addEventListener('mouseenter', function() {
-                logo.style.transform = 'scale(1.1) rotate(-5deg)';
-            });
-            
-            logo.addEventListener('mouseleave', function() {
-                logo.style.transform = 'scale(1) rotate(0)';
-            });
-            
-            // 4. Simular atividade de outros usuários (para efeito realista)
-            setInterval(() => {
-                if (Math.random() > 0.8) { // 20% de chance a cada 10 segundos
-                    window.contador.atualizarContador();
+
+        // Sistema de Inscrição
+        class SubscriptionSystem {
+            constructor() {
+                this.subscribed1 = false;
+                this.subscribed2 = false;
+                
+                this.btn1 = document.getElementById('subscribeButton1');
+                this.btn2 = document.getElementById('subscribeButton2');
+                this.btnText1 = document.getElementById('btnText1');
+                this.btnText2 = document.getElementById('btnText2');
+                this.countdown1 = document.getElementById('countdown1');
+                this.countdown2 = document.getElementById('countdown2');
+                this.progressBar1 = document.getElementById('progressBar1');
+                this.progressBar2 = document.getElementById('progressBar2');
+                this.step1 = document.getElementById('step1');
+                this.step2 = document.getElementById('step2');
+                this.line1 = document.getElementById('line1');
+
+                this.confetti = new ConfettiSystem();
+                this.initEvents();
+            }
+
+            initEvents() {
+                this.btn1.addEventListener('click', () => this.handleSubscribe(1));
+                this.btn2.addEventListener('click', () => this.handleSubscribe(2));
+            }
+
+            handleSubscribe(channel) {
+                if (channel === 1 && !this.subscribed1) {
+                    this.startSubscription(1);
+                } else if (channel === 2 && !this.subscribed2) {
+                    this.startSubscription(2);
                 }
-            }, 10000);
-            
-            // 5. Log de inicialização
-            console.log('🚀 PassiTech Platform inicializada com sucesso!');
-            console.log('📊 Sistema de contador em tempo real ativado');
-        });
-        
-        // ============================================
-        // FUNÇÕES ADICIONAIS PARA DEBUG/CONTROLE
-        // ============================================
-        
-        // Função para simular 100 visitas (para testes)
-        function simularVisitasRapidas() {
-            for (let i = 0; i < 100; i++) {
+            }
+
+            startSubscription(channel) {
+                const btn = channel === 1 ? this.btn1 : this.btn2;
+                const btnText = channel === 1 ? this.btnText1 : this.btnText2;
+                const countdown = channel === 1 ? this.countdown1 : this.countdown2;
+                const progressBar = channel === 1 ? this.progressBar1 : this.progressBar2;
+                
+                // Abrir YouTube
+                const url = channel === 1 
+                    ? "https://www.youtube.com/@PASSITECH?sub_confirmation=1"
+                    : "https://www.youtube.com/@RJOTAFN?sub_confirmation=1";
+                window.open(url, "_blank");
+
+                // Iniciar contagem e barra de progresso
+                let seconds = 10;
+                btn.classList.add('processing');
+                btn.disabled = true;
+                
+                // Reset e início da barra de progresso
+                progressBar.style.width = '0%';
+                
+                const timer = setInterval(() => {
+                    seconds--;
+                    countdown.textContent = seconds + 's';
+                    
+                    // Atualizar barra de progresso
+                    const progress = ((10 - seconds) / 10) * 100;
+                    progressBar.style.width = progress + '%';
+                    
+                    if (seconds <= 0) {
+                        clearInterval(timer);
+                        this.completeSubscription(channel);
+                    }
+                }, 1000);
+            }
+
+            completeSubscription(channel) {
+                if (channel === 1) {
+                    this.subscribed1 = true;
+                    this.btn1.classList.remove('processing');
+                    this.btn1.classList.add('completed');
+                    this.btnText1.innerHTML = '✓ Inscrito';
+                    this.step1.classList.add('completed');
+                    this.line1.classList.add('completed');
+                    this.step2.classList.add('active');
+                } else {
+                    this.subscribed2 = true;
+                    this.btn2.classList.remove('processing');
+                    this.btn2.classList.add('completed');
+                    this.btnText2.innerHTML = '✓ Inscrito';
+                    this.step2.classList.add('completed');
+                }
+
+                // SÓ MOSTRA CONFETES QUANDO AS DUAS INSCRIÇÕES ESTIVEREM COMPLETAS
+                if (this.subscribed1 && this.subscribed2) {
+                    this.completeAll();
+                }
+            }
+
+            completeAll() {
+                // EXPLOSÃO MASSIVA DE CONFETES - SÓ AGORA!
+                this.confetti.massiveExplosion();
+                
                 setTimeout(() => {
-                    window.contador.atualizarContador();
-                }, i * 50);
+                    const downloadLink = new URLSearchParams(window.location.search).get("link");
+                    if (downloadLink) {
+                        window.location.href = decodeURIComponent(downloadLink);
+                    } else {
+                        alert("🎉 PARABÉNS! Inscrições confirmadas! Você será redirecionado...");
+                        setTimeout(() => {
+                            window.location.href = "https://plataforma.passitech.com/downloads";
+                        }, 2000);
+                    }
+                }, 1500);
             }
-            console.log('⚡ Simulando 100 visitas rápidas...');
         }
-        
-        // Expor funções úteis para o console (para debug)
-        window.PassiTech = {
-            contador: window.contador,
-            resetarContador: () => window.contador.resetar(),
-            simularVisitas: simularVisitasRapidas,
-            getEstatisticas: () => window.contador.getEstatisticas(),
-            debugInfo: () => {
-                const stats = window.contador.getEstatisticas();
-                console.group('🔍 Debug - PassiTech Platform');
-                console.log('📊 Estatísticas:', stats);
-                console.log('🆔 Sessão Atual:', window.contador.sessaoID);
-                console.log('👥 Usuários Ativos:', window.contador.usuariosAtivos.size);
-                console.log('🎯 Próximo Marco:', Math.ceil(stats.totalVisitas / 100) * 100);
-                console.groupEnd();
-                return stats;
-            }
-        };
-        
-        // Inicializar animação de pulsação no contador
+
+        // Inicializar tudo
         document.addEventListener('DOMContentLoaded', () => {
-            const estilo = document.createElement('style');
-            estilo.textContent = `
-                @keyframes pulseCounter {
-                    0% { transform: scale(1); text-shadow: 0 0 10px rgba(241, 196, 15, 0.7); }
-                    50% { transform: scale(1.05); text-shadow: 0 0 20px rgba(241, 196, 15, 0.9); }
-                    100% { transform: scale(1); text-shadow: 0 0 10px rgba(241, 196, 15, 0.7); }
-                }
-            `;
-            document.head.appendChild(estilo);
+            window.counter = new VisitCounter();
+            window.subscription = new SubscriptionSystem();
         });
-        
     </script>
 </body>
 </html>
