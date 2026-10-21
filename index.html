@@ -105,8 +105,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
   var $=function(i){return document.getElementById(i)}, msg=$("msg"), dl=$("dl");
   var TICK='<svg class="tick" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17"/><path d="M9.5 17.5l5 5L24.5 11.5"/></svg>';
   var PHASES=["Confirmando inscrição…","Validando…","Quase pronto…"];
-  var saved={};try{saved=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
-  function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+  var saved={}; // sem armazenamento: toda vez que a página abre, começa do zero
+  function persist(){}
   function say(t,e){msg.textContent=t||"";msg.className="msg"+(e?" err":"")}
   $("logo").addEventListener("error",function(){this.hidden=true;$("fb").hidden=false});
 
