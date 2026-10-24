@@ -10,7 +10,7 @@
 <style>
 :root{--g:#FFC20E;--b:#2F86F0;--bd:#1553C7;--line:rgba(255,255,255,.1);--mut:rgba(255,255,255,.68);--err:#FF5A5F}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:#040A24;min-height:100dvh;display:grid;place-items:center;padding:24px;overflow-x:hidden;perspective:1200px}
+body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:#040A24;min-height:100dvh;display:grid;place-items:center;padding:24px;overflow-x:hidden}
 .blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.3;z-index:-1;animation:float 16s ease-in-out infinite}
 .b1{width:420px;height:420px;background:var(--b);top:-120px;left:-100px}
 .b2{width:480px;height:480px;background:var(--bd);bottom:-160px;right:-120px;animation-delay:-6s}
@@ -239,7 +239,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
   // leve efeito 3D com o mouse
   var card=$("card");
   if(matchMedia("(hover:hover)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
-    document.addEventListener("mousemove",function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;card.style.transform="rotateY("+x*5+"deg) rotateX("+-y*5+"deg)"});
+    document.addEventListener("mousemove",function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;card.style.transform="perspective(1200px) rotateY("+x*5+"deg) rotateX("+-y*5+"deg)"});
   }
 })();
 </script>
