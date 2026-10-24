@@ -96,7 +96,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
     <div class="act"><button class="s2" type="button">Inscrever-se</button></div><div class="pb"></div>
   </div>
 
-  <button class="dl" id="dl" type="button" disabled>🔒 Download bloqueado</button>
+  <button class="dl" id="dl" type="button" disabled>🔒 Acesso bloqueado</button>
   <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
   <div class="foot">
@@ -126,7 +126,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
     var n=chans.filter(function(c){return saved[c.key]}).length;
     $("fill").style.width=(n*50)+"%";$("bar").setAttribute("aria-valuenow",n);
     $("cnt").textContent=n+" de 2 inscrições confirmadas";
-    if(n===2){dl.disabled=false;dl.classList.add("ready");dl.textContent="Baixar agora"}
+    if(n===2){dl.disabled=false;dl.classList.add("ready");dl.textContent="Acessar agora"}
   }
   function setOk(c){
     c.mode="ok";c.el.className="ch ok";c.sm.textContent="Inscrição confirmada";c.act.innerHTML=TICK;c.pb.style.width="0";counts();
