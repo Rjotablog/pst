@@ -8,30 +8,58 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--g:#FFC20E;--b:#2F86F0;--bd:#1553C7;--line:rgba(255,255,255,.1);--mut:rgba(255,255,255,.68);--err:#FF5A5F}
+:root{--g:#FFC20E;--cy:#38BDF8;--b:#2F86F0;--bd:#1553C7;--line:rgba(255,255,255,.1);--mut:rgba(255,255,255,.68);--err:#FF5A5F}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:#040A24;min-height:100dvh;display:grid;place-items:center;padding:24px;overflow-x:hidden}
+body{font-family:'Inter',system-ui,sans-serif;color:#fff;background:linear-gradient(180deg,#040B2C 0%,#061546 55%,#040A24 100%);min-height:100dvh;display:grid;place-items:center;padding:24px;overflow-x:hidden}
 .blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.3;z-index:-1;animation:float 16s ease-in-out infinite}
 .b1{width:420px;height:420px;background:var(--b);top:-120px;left:-100px}
 .b2{width:480px;height:480px;background:var(--bd);bottom:-160px;right:-120px;animation-delay:-6s}
-.b3{width:300px;height:300px;background:#E8262B;top:40%;left:55%;opacity:.1;animation-delay:-11s}
+.b3{width:320px;height:320px;background:var(--cy);top:40%;left:55%;opacity:.12;animation-delay:-11s}
 @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-40px) scale(1.12)}66%{transform:translate(-40px,50px) scale(.94)}}
-.grid{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.18;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%)}
-.card{position:relative;width:100%;max-width:540px;border-radius:36px;padding:38px 32px 26px;background:rgba(6,14,46,.8);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);transition:transform .15s ease-out;animation:enter .8s cubic-bezier(.16,1,.3,1)}
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0,var(--b) 18%,transparent 36%,rgba(255,194,14,.7) 62%,transparent 76%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite;pointer-events:none}
+.grid{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.26;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 70%)}
+
+.tech{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+  background:radial-gradient(ellipse 70% 45% at 50% 0,rgba(56,189,248,.14),transparent 70%),radial-gradient(circle,rgba(130,190,255,.26) 1px,transparent 1.6px) 0 0/28px 28px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 85%);mask-image:radial-gradient(ellipse at 50% 45%,#000 20%,transparent 85%)}
+.tech::after{content:"";position:absolute;left:0;right:0;top:-160px;height:160px;background:linear-gradient(180deg,transparent,rgba(56,189,248,.09),transparent);animation:scan 10s linear infinite}
+@keyframes scan{to{transform:translateY(calc(100vh + 320px))}}
+
+/* ===== Cartão central: Glassmorphism ===== */
+.card{position:relative;width:100%;max-width:540px;border-radius:36px;padding:38px 32px 26px;
+  background:linear-gradient(145deg,rgba(60,120,230,.16),rgba(8,20,64,.42) 55%,rgba(8,20,64,.34));
+  border:1px solid rgba(130,180,255,.26);
+  -webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);
+  box-shadow:0 24px 60px -18px rgba(0,8,40,.65),0 2px 0 rgba(255,255,255,.07) inset,0 0 0 1px rgba(47,134,240,.06);
+  transition:transform .15s ease-out;animation:enter .8s cubic-bezier(.16,1,.3,1)}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),rgba(255,194,14,.16) 0,rgba(255,194,14,.9) 14%,rgba(255,194,14,.16) 32%,rgba(255,194,14,.16) 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 9s linear infinite;pointer-events:none}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 28%)}
+.card>*{position:relative;z-index:1}
 @property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
 @keyframes spin{to{--a:360deg}}
 @keyframes enter{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
-.logo{display:flex;justify-content:center;margin-bottom:16px}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.card{background:rgba(6,14,46,.88)}}
+
+.logo{display:flex;justify-content:center;margin-bottom:12px}
 #logo{width:96px;height:96px;object-fit:contain;border-radius:50%;box-shadow:0 8px 28px rgba(47,134,240,.35)}
-.fb{font-size:1.5rem;font-weight:800}
+
+/* ===== Nome do canal + selo online ===== */
+.brand{display:flex;flex-direction:column;align-items:center;gap:9px;margin-bottom:18px}
+.bn{font-size:1.4rem;font-weight:800;letter-spacing:-.4px;line-height:1}
+.official{display:inline-flex;align-items:center;gap:8px;padding:6px 13px 6px 11px;border-radius:50px;font-size:.74rem;font-weight:700;color:#CFFADF;background:linear-gradient(135deg,rgba(74,222,128,.16),rgba(74,222,128,.05));border:1px solid rgba(74,222,128,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.live{width:8px;height:8px;border-radius:50%;background:#4ADE80;flex:none;animation:ping 1.9s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(74,222,128,.65)}70%,100%{box-shadow:0 0 0 7px rgba(74,222,128,0)}}
+
+/* ===== Selo de gratuidade ===== */
+.seal{display:flex;justify-content:center;margin-bottom:14px}
+.seal span{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:50px;font-size:.72rem;font-weight:800;letter-spacing:.06em;color:#FFE08A;background:linear-gradient(135deg,rgba(255,194,14,.2),rgba(255,194,14,.07));border:1px solid rgba(255,194,14,.5);box-shadow:0 4px 18px -6px rgba(255,194,14,.45),inset 0 1px 0 rgba(255,255,255,.14)}
+.seal svg{width:15px;height:15px;fill:none;stroke:var(--g);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
 h1{text-align:center;font-size:1.65rem;font-weight:800;letter-spacing:-.6px;line-height:1.2;margin-bottom:8px;color:#fff}
-@keyframes shine{to{background-position:-250% 0}}
 .sub{text-align:center;color:var(--mut);font-size:.92rem;line-height:1.55;margin:0 auto 20px;max-width:400px}
 .bar{height:6px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:6px}
 .bar i{display:block;height:100%;width:0;background:var(--b);transition:width .6s cubic-bezier(.16,1,.3,1)}
 .cnt{font-size:.78rem;color:var(--mut);text-align:right;margin-bottom:16px}
-.ch{position:relative;display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:24px;background:rgba(255,255,255,.03);margin-bottom:12px;overflow:hidden;transition:border-color .4s,background .4s}
+.ch{position:relative;display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:24px;background:rgba(255,255,255,.04);margin-bottom:12px;overflow:hidden;transition:border-color .4s,background .4s}
 .ch.wait{border-color:rgba(47,134,240,.6)}
 .ch.chk{border-color:rgba(255,194,14,.5)}
 .ch.ok{border-color:rgba(47,134,240,.7);background:rgba(47,134,240,.12)}
@@ -44,8 +72,17 @@ button,.btn{font:inherit;cursor:pointer;border:0;color:#fff;border-radius:60px;p
 button:hover:not(:disabled){transform:translateY(-2px)}
 button:disabled{cursor:default}
 button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
-.s1,.s2{background:linear-gradient(135deg,var(--b),var(--bd))}
-.chk .act button{background:rgba(255,255,255,.1);border:1px solid var(--line)}
+
+/* ===== Botão de inscrição: brilho + reflexo de vidro ===== */
+.s1{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,var(--b),var(--bd));box-shadow:0 6px 18px -6px rgba(47,134,240,.6),inset 0 1px 0 rgba(255,255,255,.28)}
+.s1::before{content:"";position:absolute;left:0;right:0;top:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,0));border-radius:60px 60px 0 0;pointer-events:none;z-index:-1}
+.s1::after{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;background:linear-gradient(105deg,transparent 0,rgba(255,255,255,.45) 50%,transparent 100%);transform:skewX(-20deg);pointer-events:none;animation:sheen 4.5s ease-in-out infinite}
+@keyframes sheen{0%,55%{left:-70%}100%{left:130%}}
+.s1:hover:not(:disabled){box-shadow:0 8px 24px -6px rgba(47,134,240,.85),inset 0 1px 0 rgba(255,255,255,.35)}
+.s1:disabled::after{animation:none;opacity:0}
+.chk .act button{background:rgba(255,255,255,.1);border:1px solid var(--line);box-shadow:none}
+.chk .act button::before{display:none}
+
 .spin{width:15px;height:15px;border:2.5px solid var(--line);border-top-color:#fff;border-radius:50%;animation:r .8s linear infinite}
 @keyframes r{to{transform:rotate(360deg)}}
 .tick{width:34px;height:34px}.tick circle{fill:var(--b)}.tick path{stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .1s forwards}
@@ -55,17 +92,26 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .dl:disabled{background:rgba(255,255,255,.07);box-shadow:none;color:var(--mut)}
 .dl.ready{animation:glow 1.8s ease-in-out infinite}
 @keyframes glow{50%{box-shadow:0 14px 40px -4px rgba(47,134,240,.7)}}
-.msg{min-height:20px;text-align:center;font-size:.82rem;margin-top:12px;color:var(--mut)}.msg.err{color:var(--err)}
+
+/* ===== Mensagem de segurança ===== */
+.safe{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:.8rem;line-height:1.4;color:rgba(255,255,255,.8);text-align:center}
+.safe svg{width:16px;height:16px;flex:none;fill:none;stroke:#7DB6FF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.msg{min-height:20px;text-align:center;font-size:.82rem;margin-top:10px;color:var(--mut)}.msg.err{color:var(--err)}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-size:.78rem;color:var(--mut)}
 .ig{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#fff;font-weight:600;padding:8px 14px;border-radius:50px;background:rgba(255,255,255,.08);border:1px solid var(--line);transition:transform .2s}
 .ig:hover{transform:translateY(-2px)}
 .ig svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .cf{position:fixed;inset:0;pointer-events:none;z-index:99}.cf span{position:absolute;top:-5vh;width:9px;height:14px;opacity:0;animation:fall 3s ease-out forwards}
 @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
-@media(max-width:520px){.card{padding:28px 16px 22px;border-radius:28px}h1{font-size:1.38rem}.ch{flex-wrap:wrap}.act{width:100%}.act button{width:100%}}
+@media(max-width:520px){.card{padding:28px 16px 22px;border-radius:28px}h1{font-size:1.38rem}.ch{flex-wrap:wrap}.act{width:100%}.act button{width:100%}.seal span{font-size:.68rem}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .visits{position:fixed;right:calc(50% + 270px + 28px);top:calc(50% - 42px);transform:translateY(-50%);text-align:center;pointer-events:none;user-select:none;z-index:0;animation:enter 1s .3s both}
 .visits .n{font-size:clamp(3.5rem,7vw,7.5rem);font-weight:800;letter-spacing:-.04em;line-height:1;color:#fff;text-shadow:0 0 28px rgba(47,134,240,.6),0 4px 18px rgba(0,0,0,.55);font-variant-numeric:tabular-nums}
+.visits .n{position:relative;display:inline-block;padding:.14em .42em;border-radius:.2em}
+.visits .n::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),rgba(255,194,14,.16) 0,rgba(255,194,14,.9) 14%,rgba(255,194,14,.16) 32%,rgba(255,194,14,.16) 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 9s linear infinite;pointer-events:none}
+.visits .thx{max-width:330px;margin:0 auto 22px;font-size:1.08rem;font-weight:700;line-height:1.5;color:#FFD04A;text-shadow:0 0 18px rgba(255,194,14,.45),0 2px 10px rgba(0,0,0,.6)}
+.visits .thx .hrt{text-shadow:none}
 .visits .l{margin-top:14px;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.88);font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.6);line-height:1.5}
 .visits .l i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--g);margin-right:7px;box-shadow:0 0 10px var(--g);animation:glow 1.8s ease-in-out infinite}
 @media(max-width:1359px){.visits{position:static;transform:none;margin-bottom:18px}.visits .n{font-size:3rem}body{align-content:center}}
@@ -84,17 +130,22 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 </head>
 <body>
 <div class="reel" id="reel" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
+<div class="tech" aria-hidden="true"></div>
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div>
 
-<div class="visits" id="visits" hidden aria-live="polite"><div class="n" id="vnum">0</div><div class="l"><i></i>pessoas já acessaram<br>esta página</div></div>
+<div class="visits" id="visits" hidden aria-live="polite"><p class="thx">Obrigado por fazer parte desta comunidade! <span class="hrt">❤️</span><br>Nós, da PassiTech, amamos vocês!</p><div class="n" id="vnum">0</div><div class="l"><i></i>pessoas já acessaram<br>esta página</div></div>
 
 <main class="card" id="card">
-  <div class="logo"><img id="logo" src="https://yt3.googleusercontent.com/NThF3F7HCCJJj45lWc8vOu-hv4bVlcr9KH00LAJZDVCvenYzcuvsz7FYb5-cFoJN2KQTsWgIgg=s160-c-k-c0x00ffffff-no-rj" width="96" height="96" alt="PassiTech"><span class="fb" id="fb" hidden>PassiTech</span></div>
-  <h1>Libere seu download gratuito</h1>
-  <p class="sub">Inscreva-se nos dois canais do YouTube para desbloquear o acesso. Leva menos de um minuto.</p>
+  <div class="logo"><img id="logo" src="https://yt3.googleusercontent.com/NThF3F7HCCJJj45lWc8vOu-hv4bVlcr9KH00LAJZDVCvenYzcuvsz7FYb5-cFoJN2KQTsWgIgg=s160-c-k-c0x00ffffff-no-rj" width="96" height="96" alt="PassiTech"></div>
+  <div class="brand"><span class="bn">PassiTech</span><span class="official"><i class="live"></i>Canal oficial</span></div>
 
-  <div class="bar" id="bar" role="progressbar" aria-valuemin="0" aria-valuemax="2" aria-valuenow="0"><i id="fill"></i></div>
-  <div class="cnt" id="cnt" aria-live="polite">0 de 2 inscrições confirmadas</div>
+  <div class="seal"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 16.8 6.1 20.1l1.3-6.6L2.5 8.9l6.6-.8L12 2z"/></svg>DOWNLOAD 100% GRATUITO</span></div>
+
+  <h1>Libere seu download gratuito</h1>
+  <p class="sub">Inscreva-se no canal oficial da PassiTech no YouTube para desbloquear o acesso. Leva menos de um minuto.</p>
+
+  <div class="bar" id="bar" role="progressbar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><i id="fill"></i></div>
+  <div class="cnt" id="cnt" aria-live="polite">0 de 1 inscrição confirmada</div>
 
   <div class="ch" id="c1" data-key="passitech" data-url="https://www.youtube.com/@PASSITECH?sub_confirmation=1">
     <div class="ic"><svg viewBox="0 0 24 24"><path d="M19.6 3.2c-3.6-.25-11.6-.25-15.2 0C.5 3.5 0 5.8 0 12s.5 8.5 4.4 8.8c3.6.25 11.6.25 15.2 0 3.9-.27 4.4-2.6 4.4-8.8s-.5-8.5-4.4-8.8zM9 16V8l8 4-8 4z"/></svg></div>
@@ -102,13 +153,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
     <div class="act"><button class="s1" type="button">Inscrever-se</button></div><div class="pb"></div>
   </div>
 
-  <div class="ch" id="c2" data-key="rjotafn" data-url="https://www.youtube.com/@RJOTAFN?sub_confirmation=1">
-    <div class="ic"><svg viewBox="0 0 24 24"><path d="M19.6 3.2c-3.6-.25-11.6-.25-15.2 0C.5 3.5 0 5.8 0 12s.5 8.5 4.4 8.8c3.6.25 11.6.25 15.2 0 3.9-.27 4.4-2.6 4.4-8.8s-.5-8.5-4.4-8.8zM9 16V8l8 4-8 4z"/></svg></div>
-    <div class="t"><b>Canal RJOTAFN</b><small>Toque em inscrever-se</small></div>
-    <div class="act"><button class="s2" type="button">Inscrever-se</button></div><div class="pb"></div>
-  </div>
-
   <button class="dl" id="dl" type="button" disabled>🔒 Acesso bloqueado</button>
+  <p class="safe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span>Seus dados não são solicitados. Não é necessário informar senha.</span></p>
   <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
   <div class="foot">
@@ -120,61 +166,90 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 
 <script>
 (function(){
-  var FALLBACK="https://plataforma.passitech.com/downloads", MIN_AWAY=8000, KEY="passitech_v3";
+  var FALLBACK="https://plataforma.passitech.com/downloads";
   var $=function(i){return document.getElementById(i)}, msg=$("msg"), dl=$("dl");
   var TICK='<svg class="tick" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17"/><path d="M9.5 17.5l5 5L24.5 11.5"/></svg>';
-  var PHASES=["Confirmando inscrição…","Validando…","Quase pronto…"];
   var saved={}; // sem armazenamento: toda vez que a página abre, começa do zero
   function persist(){}
   function say(t,e){msg.textContent=t||"";msg.className="msg"+(e?" err":"")}
-  $("logo").addEventListener("error",function(){if(this.dataset.t){this.hidden=true;$("fb").hidden=false}else{this.dataset.t=1;this.src="logo.png"}});
+  $("logo").addEventListener("error",function(){if(this.dataset.t){this.hidden=true}else{this.dataset.t=1;this.src="logo.png"}});
 
-  var chans=[$("c1"),$("c2")].map(function(el){
+  var chans=[$("c1")].map(function(el){
     return{el:el,key:el.dataset.key,url:el.dataset.url,btn:el.querySelector("button"),sm:el.querySelector("small"),act:el.querySelector(".act"),pb:el.querySelector(".pb"),
       mode:"idle",away:0,leftAt:null,idleBtn:el.querySelector("button").className}
   });
 
   function counts(){
     var n=chans.filter(function(c){return saved[c.key]}).length;
-    $("fill").style.width=(n*50)+"%";$("bar").setAttribute("aria-valuenow",n);
-    $("cnt").textContent=n+" de 2 inscrições confirmadas";
-    if(n===2){dl.disabled=false;dl.classList.add("ready");dl.textContent="Acessar agora"}
+    $("fill").style.width=(n*100)+"%";$("bar").setAttribute("aria-valuenow",n);
+    $("cnt").textContent=n+" de 1 inscrição confirmada";
+    if(n===1){dl.disabled=false;dl.classList.add("ready");dl.textContent="Acessar agora"}
   }
   function setOk(c){
     c.mode="ok";c.el.className="ch ok";c.sm.textContent="Inscrição confirmada";c.act.innerHTML=TICK;c.pb.style.width="0";counts();
   }
-  function reset(c,m){
-    c.mode="idle";c.el.className="ch";c.sm.textContent="Toque em inscrever-se";c.leftAt=null;c.away=0;
-    c.btn.disabled=false;c.btn.className=c.idleBtn;c.btn.textContent="Inscrever-se";c.pb.style.width="0";if(m)say(m,true);
-  }
-  function countdown(c){
-    c.mode="chk";c.el.className="ch chk";c.btn.disabled=true;say("");
-    window.open(c.url,"_blank","noopener");
-    var n=15;c.btn.innerHTML='<span class="spin"></span>Verificando <b class="cd">15s</b>';
-    c.sm.textContent="Confirmando sua inscrição…";
+  var FIRST=15, SECOND=15; // segundos de verificação (1ª e 2ª tentativa)
+
+  // contagem regressiva com a barra do cartão
+  function run(c,secs,done){
+    var n=secs;
+    c.mode="chk";c.el.className="ch chk";c.btn.disabled=true;c.btn.className=c.idleBtn;say("");
+    c.btn.innerHTML='<span class="spin"></span>Verificando <b class="cd">'+secs+'s</b>';
+    c.sm.textContent="Procurando sua inscrição…";
     c.pb.style.transition="none";c.pb.style.width="0";void c.pb.offsetWidth;
-    c.pb.style.transition="width 15s linear";c.pb.style.width="100%";
-    var iv=setInterval(function(){
-      n--;var cd=c.btn.querySelector(".cd");if(cd)cd.textContent=n+"s";
-      if(n<=0){clearInterval(iv);c.pb.style.transition="none";saved[c.key]=true;persist();setOk(c);
-        if(saved.passitech&&saved.rjotafn){say("Tudo certo! Seu download foi liberado.");confetti()}}
+    c.pb.style.transition="width "+secs+"s linear";c.pb.style.width="100%";
+    c.iv=setInterval(function(){
+      n--;var cd=c.btn.querySelector(".cd");if(cd)cd.textContent=Math.max(n,0)+"s";
+      if(n<=0){clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";done(c)}
     },1000);
   }
+  function notFound(c){
+    c.mode="retry";c.stage=2;c.el.className="ch wait";
+    c.sm.textContent="Não encontramos sua inscrição.";
+    c.btn.disabled=false;c.btn.className=c.idleBtn;c.btn.textContent="Tentar novamente";
+    say("Não encontramos sua inscrição. Toque em Tentar novamente e clique em “Inscrever-se” no YouTube.",true);
+  }
+  function success(c){
+    saved[c.key]=true;persist();setOk(c);
+    if(saved.passitech){say("Tudo certo! Seu download foi liberado.");confetti()}
+  }
+  function waiting(c){
+    c.mode="away";c.left=false;c.el.className="ch wait";
+    c.btn.disabled=true;c.btn.textContent="Aguardando…";
+    c.sm.textContent="Inscreva-se no canal e volte aqui.";say("");
+  }
+  function start(c){run(c,c.stage===1?FIRST:SECOND,c.stage===1?notFound:success)}
+
+  // detecta saída e volta do visitante para a página
+  function left(){chans.forEach(function(c){
+    if(c.mode==="away"){c.left=true}
+    else if(c.mode==="chk"){ // saiu no meio da contagem: reinicia quando voltar
+      clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";waiting(c);c.left=true;
+    }
+  })}
+  function back(){chans.forEach(function(c){
+    if(c.mode==="away"&&c.left){c.left=false;start(c)}
+  })}
+  document.addEventListener("visibilitychange",function(){document.hidden?left():back()});
+  window.addEventListener("blur",left);
+  window.addEventListener("focus",back);
 
   chans.forEach(function(c){
+    c.stage=1;
     if(saved[c.key]){setOk(c)}
     c.btn.addEventListener("click",function(){
-      if(c.mode==="idle"){
-        // 1º clique: abre o canal e mostra o aviso
-        window.open(c.url,"_blank","noopener");
-        c.mode="retry";c.el.className="ch wait";
-        c.sm.textContent="Não encontramos sua inscrição.";
-        c.btn.textContent="Verificar novamente";
-        say("Não encontramos sua inscrição. Clique em Verificar novamente e toque em “Inscrever-se” no YouTube.",true);
-      }else if(c.mode==="retry"){
-        // 2º clique: abre o canal de novo e inicia a contagem de 15s
-        countdown(c);
-      }
+      if(c.mode!=="idle"&&c.mode!=="retry")return;
+      var prev=c.mode;
+      window.open(c.url,"_blank","noopener");
+      waiting(c);
+      // se o canal não abriu (pop-up bloqueado), libera o botão para tentar de novo
+      setTimeout(function(){
+        if(c.mode==="away"&&!c.left){
+          c.mode=prev;c.btn.disabled=false;c.btn.textContent=prev==="idle"?"Inscrever-se":"Tentar novamente";
+          c.sm.textContent=prev==="idle"?"Toque em inscrever-se":"Não encontramos sua inscrição.";c.el.className=prev==="idle"?"ch":"ch wait";
+          say("O canal não abriu. Permita pop-ups e tente novamente.",true);
+        }
+      },3000);
     });
   });
 
@@ -183,7 +258,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
     try{var u=new URL(r);return u.protocol==="https:"?u.href:FALLBACK}catch(e){return FALLBACK}
   }
   dl.addEventListener("click",function(){
-    if(!(saved.passitech&&saved.rjotafn))return;
+    if(!saved.passitech)return;
     dl.disabled=true;dl.classList.remove("ready");dl.textContent="Redirecionando…";confetti();
     setTimeout(function(){location.href=target()},1400);
   });
