@@ -109,6 +109,9 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .vi .tx{min-width:0;flex:1}
 .vi .tx b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.86rem;font-weight:600;line-height:1.35}
 .vi .tx small{display:block;margin-top:4px;font-size:.74rem;color:var(--mut)}
+.vi{height:83px}
+.vi.out{animation:vOut .45s ease forwards}
+@keyframes vOut{to{opacity:0;transform:translateX(18px) scale(.97)}}
 .sk{height:81px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.1),rgba(255,255,255,.04));background-size:200% 100%;animation:shim 1.4s linear infinite}
 @keyframes shim{to{background-position:-200% 0}}
 .fa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:12px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.86rem;color:#fff;background:linear-gradient(135deg,var(--b),var(--bd));box-shadow:0 6px 18px -6px rgba(47,134,240,.7),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s}
@@ -260,7 +263,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 
   <!-- Dono da página e do canal oficial -->
   <div class="owner" id="owner">
-    <img id="ownerImg" src="eu.png" alt="Dono da página e do canal oficial PassiTech">
+    <img id="ownerImg" src="eu.png.png" alt="Dono da página e do canal oficial PassiTech">
     <div class="tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>Dono da página<br>e do canal oficial</div>
   </div>
 </div>
@@ -276,7 +279,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
   function say(t,e){msg.textContent=t||"";msg.className="msg"+(e?" err":"")}
   $("logo").addEventListener("error",function(){if(this.dataset.t){this.hidden=true}else{this.dataset.t=1;this.src="logo.png"}});
   // se a foto do dono não carregar, esconde o selo em vez de mostrar imagem quebrada
-  $("ownerImg").addEventListener("error",function(){$("owner").hidden=true});
+  $("ownerImg").addEventListener("error",function(){if(this.dataset.t){$("owner").hidden=true}else{this.dataset.t=1;this.src="eu.png"}});
 
   var chans=[$("c1")].map(function(el){
     return{el:el,key:el.dataset.key,url:el.dataset.url,btn:el.querySelector("button"),sm:el.querySelector("small"),act:el.querySelector(".act"),pb:el.querySelector(".pb"),
@@ -400,7 +403,8 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
   (function(){
     var YT_KEY="";
     var YT_HANDLE="PASSITECH";
-    var VIDEOS=["83SNKcImYlA","r2uNZUZCRSE","8RnvrXe8774","uMMpI4ILV-o"];
+    var VIDEOS=["83SNKcImYlA","r2uNZUZCRSE","8RnvrXe8774","_Wvfz_bxZh8","XjFpBBbOAIA","O0CyY_R-db0"];
+    var SHOW=4, SWAP_MS=3500, timer=null, pool=[], slots=[], nextIdx=0, slotPtr=0;
     var list=$("fl"),stats=$("fst");
     var PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
     var nf=new Intl.NumberFormat("pt-BR",{notation:"compact",maximumFractionDigits:1});
@@ -421,9 +425,23 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
       tx.appendChild(b);tx.appendChild(sm);a.appendChild(th);a.appendChild(tx);
       return a;
     }
+    function swap(){
+      if(document.hidden||!slots.length)return;
+      var i=slotPtr%slots.length;slotPtr++;
+      var old=slots[i],r=pool[nextIdx%pool.length];nextIdx++;
+      old.classList.add("out");
+      setTimeout(function(){
+        var neu=item(r.id,r.title,r.sub,0);
+        if(old.parentNode===list){list.replaceChild(neu,old);slots[i]=neu}
+      },450);
+    }
     function render(rows){
-      list.innerHTML="";
-      rows.forEach(function(r,i){list.appendChild(item(r.id,r.title,r.sub,i))});
+      clearInterval(timer);list.innerHTML="";pool=rows;slots=[];slotPtr=0;
+      var n=Math.min(SHOW,rows.length);
+      for(var i=0;i<n;i++){var el=item(rows[i].id,rows[i].title,rows[i].sub,i);slots.push(el);list.appendChild(el)}
+      nextIdx=n;
+      // com mais vídeos que o painel comporta, troca um por vez com animação (mantém o tamanho do painel)
+      if(rows.length>n)timer=setInterval(swap,SWAP_MS);
     }
     function withOembed(){
       return Promise.all(VIDEOS.map(function(id){
@@ -463,7 +481,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
   // fundo: capas dos vídeos + banner do canal
   (function(){
     var reel=$("reel");
-    var VIDEOS=["83SNKcImYlA","r2uNZUZCRSE","8RnvrXe8774","O0CyY_R-db0","AZNPUZXq-hc","uMMpI4ILV-o"];
+    var VIDEOS=["83SNKcImYlA","r2uNZUZCRSE","8RnvrXe8774","O0CyY_R-db0","AZNPUZXq-hc"];
     var BANNER="https://yt3.googleusercontent.com/VwxGEHR525xDwvfaaib7oQ1rGUj2Km0bejsiXAOvuQXJ0uNXRjkBzmJ13JpwRiOiAYOh3XXZEQ=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj";
     var items=VIDEOS.map(function(id){return{src:"https://i.ytimg.com/vi/"+id+"/mqdefault.jpg"}});
     items.push({src:BANNER,ban:true});
