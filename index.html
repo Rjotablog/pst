@@ -6,6 +6,7 @@
 <title>PassiTech | Acesso aos downloads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://abacus.jasoncameron.dev" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--g:#FFC20E;--cy:#38BDF8;--b:#2F86F0;--bd:#1553C7;--line:rgba(255,255,255,.1);--mut:rgba(214,228,255,.84);--err:#FF7A7F;--ok:#4ADE80}
@@ -383,37 +384,43 @@ h1{font-size:1.85rem}
     setTimeout(function(){c.innerHTML=""},5500)}
 
   // contador de acessos (serviço externo gratuito).
-  // Se falhar, tenta de novo; se continuar sem resposta, mostra o último número real recebido
-  // neste aparelho. Sem nenhum número conhecido, a caixa fica oculta.
+  // Mostra a caixa NA HORA com o último número conhecido neste aparelho (ou "…" na 1ª visita)
+  // e atualiza assim que o serviço responder. Se não responder, esconde a caixa se não havia número.
   (function(){
-    var NS="passitech-downloads",KEY="visitas",CK="pt_visits_last",box=$("visits"),num=$("vnum"),seen=false,shown=false;
+    var NS="passitech-downloads",KEY="visitas",CK="pt_visits_last",box=$("visits"),num=$("vnum"),seen=false,cur=0,last=0,raf=0;
     try{seen=sessionStorage.getItem("pt_hit")==="1"}catch(e){}
-    function show(to){
-      if(shown)return;shown=true;
-      box.hidden=false;var t0=null;
-      if(matchMedia("(prefers-reduced-motion:reduce)").matches){num.textContent=to.toLocaleString("pt-BR");return}
-      (function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/1600,1),e=1-Math.pow(1-k,3);
-        num.textContent=Math.round(to*e).toLocaleString("pt-BR");if(k<1)requestAnimationFrame(step)})(performance.now());
+    try{last=+localStorage.getItem(CK)||0}catch(e){}
+    cur=last;
+    box.hidden=false;
+    num.textContent=last>0?last.toLocaleString("pt-BR"):"…";
+    function animate(to){
+      var from=cur;cur=to;
+      if(from===to||matchMedia("(prefers-reduced-motion:reduce)").matches){num.textContent=to.toLocaleString("pt-BR");return}
+      cancelAnimationFrame(raf);
+      var t0=null,dur=1000;
+      (function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/dur,1),e=1-Math.pow(1-k,3);
+        num.textContent=Math.round(from+(to-from)*e).toLocaleString("pt-BR");
+        if(k<1)raf=requestAnimationFrame(step)})(performance.now());
     }
     function get(mode,tries){
       var ctl=window.AbortController?new AbortController():null;
-      var tm=ctl?setTimeout(function(){ctl.abort()},8000):0;
+      var tm=ctl?setTimeout(function(){ctl.abort()},4000):0;
       fetch("https://abacus.jasoncameron.dev/"+mode+"/"+NS+"/"+KEY,ctl?{signal:ctl.signal}:{})
         .then(function(r){if(!r.ok)throw 0;return r.json()})
         .then(function(d){
           clearTimeout(tm);
           if(typeof d.value!=="number")throw 0;
           try{sessionStorage.setItem("pt_hit","1");localStorage.setItem(CK,String(d.value))}catch(e){}
-          show(d.value);
+          animate(d.value);
         })
         .catch(function(){
           clearTimeout(tm);
-          if(tries>0){setTimeout(function(){get("get",tries-1)},3000);return}
-          var last=0;try{last=+localStorage.getItem(CK)}catch(e){}
-          if(last>0)show(last);
+          // se o "hit" demorou, ele pode ter contado; a nova tentativa usa só "get" para não contar duas vezes
+          if(tries>0){setTimeout(function(){get("get",tries-1)},1500);return}
+          if(!(cur>0))box.hidden=true;
         });
     }
-    get(seen?"get":"hit",2);
+    get(seen?"get":"hit",1);
   })();
 
   // painel da direita: atividade REAL do canal (YouTube)
