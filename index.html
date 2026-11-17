@@ -6,7 +6,6 @@
 <title>PassiTech | Acesso aos downloads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://abacus.jasoncameron.dev" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--g:#FFC20E;--cy:#38BDF8;--b:#2F86F0;--bd:#1553C7;--line:rgba(255,255,255,.1);--mut:rgba(214,228,255,.84);--err:#FF7A7F;--ok:#4ADE80}
@@ -383,11 +382,13 @@ h1{font-size:1.85rem}
     for(var i=0;i<110;i++){var p=document.createElement("span");p.style.left=Math.random()*100+"%";p.style.background=k[i%6];p.style.animationDelay=Math.random()+"s";p.style.animationDuration=2+Math.random()*2+"s";c.appendChild(p)}
     setTimeout(function(){c.innerHTML=""},5500)}
 
-  // contador de acessos (serviço externo gratuito).
-  // Mostra a caixa NA HORA com o último número conhecido neste aparelho (ou "…" na 1ª visita)
-  // e atualiza assim que o serviço responder. Se não responder, esconde a caixa se não havia número.
+  // contador de acessos (Firebase Realtime Database, via REST, sem SDK).
+  // 1) Cole abaixo a URL do seu banco (databaseURL). 2) O nó "visitas" deve existir com o valor inicial (ex.: 8000).
+  // A caixa aparece na hora com o último número conhecido neste aparelho e atualiza quando o banco responder.
   (function(){
-    var NS="passitech-downloads",KEY="visitas",CK="pt_visits_last",box=$("visits"),num=$("vnum"),seen=false,cur=0,last=0,raf=0;
+    var FB_URL="https://passitech-default-rtdb.firebaseio.com";
+    // (URL do banco já configurada)
+    var URL_=FB_URL.replace(/\/+$/,"")+"/visitas.json",CK="pt_visits_last",box=$("visits"),num=$("vnum"),seen=false,cur=0,last=0,raf=0;
     try{seen=sessionStorage.getItem("pt_hit")==="1"}catch(e){}
     try{last=+localStorage.getItem(CK)||0}catch(e){}
     cur=last;
@@ -402,25 +403,24 @@ h1{font-size:1.85rem}
         num.textContent=Math.round(from+(to-from)*e).toLocaleString("pt-BR");
         if(k<1)raf=requestAnimationFrame(step)})(performance.now());
     }
-    function get(mode,tries){
+    function req(opt){
       var ctl=window.AbortController?new AbortController():null;
       var tm=ctl?setTimeout(function(){ctl.abort()},4000):0;
-      fetch("https://abacus.jasoncameron.dev/"+mode+"/"+NS+"/"+KEY,ctl?{signal:ctl.signal}:{})
-        .then(function(r){if(!r.ok)throw 0;return r.json()})
-        .then(function(d){
-          clearTimeout(tm);
-          if(typeof d.value!=="number")throw 0;
-          try{sessionStorage.setItem("pt_hit","1");localStorage.setItem(CK,String(d.value))}catch(e){}
-          animate(d.value);
-        })
-        .catch(function(){
-          clearTimeout(tm);
-          // se o "hit" demorou, ele pode ter contado; a nova tentativa usa só "get" para não contar duas vezes
-          if(tries>0){setTimeout(function(){get("get",tries-1)},1500);return}
-          if(!(cur>0))box.hidden=true;
-        });
+      if(ctl)opt.signal=ctl.signal;
+      return fetch(URL_,opt).then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json()},function(e){clearTimeout(tm);throw e});
     }
-    get(seen?"get":"hit",1);
+    function read(){return req({})}
+    // soma +1 de forma atômica no servidor (sem perder acessos simultâneos)
+    function hit(){return req({method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({".sv":{increment:1}})})}
+    function done(v){
+      if(typeof v!=="number")throw 0;
+      try{sessionStorage.setItem("pt_hit","1");localStorage.setItem(CK,String(v))}catch(e){}
+      animate(v);
+    }
+    var p=seen?read():hit().then(function(v){return typeof v==="number"?v:read()});
+    p.then(done)
+     .catch(function(){return read().then(done)}) // se o +1 demorou, ele pode ter contado: só lê, não soma de novo
+     .catch(function(){if(!(cur>0))box.hidden=true});
   })();
 
   // painel da direita: atividade REAL do canal (YouTube)
