@@ -90,6 +90,11 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .cf{position:fixed;inset:0;pointer-events:none;z-index:99}.cf span{position:absolute;top:-5vh;width:9px;height:14px;opacity:0;animation:fall 3s ease-out forwards}
 @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
 
+/* Aviso de segurança abaixo do botão bloqueado */
+.lock-note{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:12px 14px;border-radius:14px;font-size:.88rem;line-height:1.45;font-weight:500;color:#FFE9A8;background:rgba(255,194,14,.09);border:1px solid rgba(255,194,14,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.lock-note[hidden]{display:none}
+.lock-note .ln-ic{flex:none;font-size:1rem;line-height:1.35}
+
 /* Painel: atividade real do canal */
 .feed{grid-column:3;grid-row:1;justify-self:center;position:relative;width:100%;max-width:420px;border-radius:28px;padding:24px 20px 18px;background:linear-gradient(170deg,rgba(14,32,92,.78),rgba(6,16,54,.88));border:1px solid rgba(150,190,255,.18);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px);box-shadow:0 40px 80px -28px rgba(0,6,36,.9),inset 0 1px 0 rgba(255,255,255,.1);animation:enter .9s .2s cubic-bezier(.16,1,.3,1) both}
 .fh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
@@ -181,6 +186,7 @@ h1{font-size:1.85rem}
   .card{padding:24px 24px 16px}.sub{margin-bottom:16px}.ch{margin-bottom:10px}.foot{margin-top:12px;padding-top:12px}
   .feed{padding:20px 18px 14px}.fs,.fn{display:none}.fh{margin-bottom:12px}
   .hero p{margin-bottom:16px}
+  .lock-note{margin-top:10px;padding:9px 12px;font-size:.82rem}
 }
 @media(min-width:1181px) and (max-height:700px){
   .vi:nth-child(4){display:none}.fst{display:none!important}
@@ -227,6 +233,7 @@ h1{font-size:1.85rem}
       </div>
 
       <button class="dl" id="dl" type="button" disabled>🔒 Acesso bloqueado</button>
+      <div class="lock-note" id="lockNote" role="note"><span class="ln-ic" aria-hidden="true">🔐</span><span>O link do download não existe nesta página. Ele só é gerado depois que você se inscreve no canal e confirma aqui.</span></div>
       <p class="safe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span>Seus dados não são solicitados. Não é necessário informar senha.</span></p>
       <div class="msg" id="msg" role="status" aria-live="polite"></div>
 
@@ -275,32 +282,57 @@ h1{font-size:1.85rem}
 
 <script>
 (function(){
-  var FALLBACK="https://plataforma.passitech.com/downloads";
+  // Anti-embed: a página não funciona dentro de iframes de outros sites
+  try{if(window.top!==window.self){window.top.location=window.self.location}}catch(e){}
+
+  // Destino padrão (partido em pedaços para não aparecer como link inteiro no código)
+  var FALLBACK_P=["https://plataforma.","passitech.com","/downloads"];
   var $=function(i){return document.getElementById(i)}, msg=$("msg"), dl=$("dl");
+  var NOTE=$("lockNote"), NOTE_HTML=NOTE.outerHTML;
   var TICK='<svg class="tick" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17"/><path d="M9.5 17.5l5 5L24.5 11.5"/></svg>';
-  var saved={};
-  function persist(){}
+  var MIN_AWAY=3500; // tempo mínimo fora da página para contar como "foi ao YouTube"
   function say(t,e){msg.textContent=t||"";msg.className="msg"+(e?" err":"")}
+  function rnd(){return Math.random().toString(36).slice(2)+Date.now().toString(36)+Math.random().toString(36).slice(2)}
   $("logo").addEventListener("error",function(){if(this.dataset.t){this.hidden=true}else{this.dataset.t=1;this.src="logo.png"}});
 
   var chans=[$("c1")].map(function(el){
     return{el:el,key:el.dataset.key,url:el.dataset.url,btn:el.querySelector("button"),sm:el.querySelector("small"),act:el.querySelector(".act"),pb:el.querySelector(".pb"),
-      mode:"idle",away:0,leftAt:null,idleBtn:el.querySelector("button").className}
+      mode:"idle",prev:"idle",away:0,leftAt:0,needAway:false,tk:null,done:null,idleBtn:el.querySelector("button").className}
   });
 
+  // O desbloqueio só existe aqui dentro (variáveis privadas). Alterar o HTML/CSS no navegador não libera nada.
+  function isUnlocked(){return chans.every(function(c){return !!c.tk&&c.done===c.tk&&c.mode==="ok"})}
+  function lockUI(){dl.disabled=true;dl.classList.remove("ready");dl.textContent="🔒 Acesso bloqueado";NOTE.hidden=false}
+  function unlockUI(){dl.disabled=false;dl.classList.add("ready");dl.textContent="🔓 Acessar agora";NOTE.hidden=true}
   function counts(){
-    var n=chans.filter(function(c){return saved[c.key]}).length;
+    var n=isUnlocked()?1:0;
     $("fill").style.width=(n*100)+"%";$("bar").setAttribute("aria-valuenow",n);
     $("cnt").textContent=n+" de 1 inscrição confirmada";
-    if(n===1){dl.disabled=false;dl.classList.add("ready");dl.textContent="🔓 Acessar agora"}
+    if(n===1){unlockUI()}else{lockUI()}
   }
+  // Guarda: se alguém mexer no botão, no aviso ou no cartão pelo inspetor, a interface volta ao estado bloqueado
+  function enforce(){
+    if(isUnlocked())return;
+    if(!document.getElementById("lockNote")){dl.insertAdjacentHTML("afterend",NOTE_HTML);NOTE=$("lockNote")}
+    if(!dl.disabled||dl.classList.contains("ready")||dl.textContent.indexOf("Acesso bloqueado")<0)lockUI();
+    if(NOTE.hidden)NOTE.hidden=false;
+    chans.forEach(function(c){
+      if(c.mode!=="ok"&&c.el.classList.contains("ok")){c.el.className=c.mode==="chk"?"ch chk":(c.mode==="idle"?"ch":"ch wait")}
+    });
+  }
+  setInterval(enforce,700);
+  if(window.MutationObserver){
+    var mo=new MutationObserver(function(){enforce()});
+    mo.observe($("card"),{attributes:true,childList:true,subtree:true,attributeFilter:["class","disabled","hidden","style"]});
+  }
+
   function setOk(c){
     c.mode="ok";c.el.className="ch ok";c.sm.textContent="Inscrição confirmada";c.act.innerHTML=TICK;c.pb.style.width="0";counts();
   }
   var FIRST=15, SECOND=15;
 
   function run(c,secs,done){
-    var n=secs;
+    var n=secs,tk=c.tk=rnd();
     c.mode="chk";c.el.className="ch chk";c.btn.disabled=true;c.btn.className=c.idleBtn;say("");
     c.btn.innerHTML='<span class="spin"></span>Verificando <b class="cd">'+secs+'s</b>';
     c.sm.textContent="Procurando sua inscrição…";
@@ -308,7 +340,11 @@ h1{font-size:1.85rem}
     c.pb.style.transition="width "+secs+"s linear";c.pb.style.width="100%";
     c.iv=setInterval(function(){
       n--;var cd=c.btn.querySelector(".cd");if(cd)cd.textContent=Math.max(n,0)+"s";
-      if(n<=0){clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";done(c)}
+      if(n<=0){
+        clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";
+        if(c.tk!==tk||c.mode!=="chk")return;
+        done(c);
+      }
     },1000);
   }
   function notFound(c){
@@ -318,24 +354,40 @@ h1{font-size:1.85rem}
     say("Não encontramos sua inscrição. Toque em Tentar novamente e clique em “Inscrever-se” no YouTube.",true);
   }
   function success(c){
-    saved[c.key]=true;persist();setOk(c);
-    if(saved.passitech){say("Tudo certo! Seu download foi liberado.");confetti()}
+    if(c.stage!==2||c.mode!=="chk")return;
+    c.done=c.tk;setOk(c);
+    if(isUnlocked()){say("Tudo certo! Seu download foi liberado.");confetti()}
   }
   function waiting(c){
     c.mode="away";c.left=false;c.el.className="ch wait";
     c.btn.disabled=true;c.btn.textContent="Aguardando…";
     c.sm.textContent="Inscreva-se no canal e volte aqui.";say("");
   }
+  function resetIdle(c){
+    c.mode=c.prev;c.btn.disabled=false;c.btn.className=c.idleBtn;
+    c.btn.textContent=c.prev==="idle"?"Inscrever-se":"Tentar novamente";
+    c.sm.textContent=c.prev==="idle"?"Toque em inscrever-se":"Não encontramos sua inscrição.";
+    c.el.className=c.prev==="idle"?"ch":"ch wait";
+  }
   function start(c){run(c,c.stage===1?FIRST:SECOND,c.stage===1?notFound:success)}
 
   function left(){chans.forEach(function(c){
-    if(c.mode==="away"){c.left=true}
+    if(c.mode==="away"){c.left=true;if(!c.leftAt)c.leftAt=Date.now()}
     else if(c.mode==="chk"){
-      clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";waiting(c);c.left=true;
+      clearInterval(c.iv);c.iv=null;c.pb.style.transition="none";c.pb.style.width="0";waiting(c);c.left=true;c.needAway=false;c.leftAt=0;
     }
   })}
   function back(){chans.forEach(function(c){
-    if(c.mode==="away"&&c.left){c.left=false;start(c)}
+    if(c.mode==="away"&&c.left){
+      c.left=false;
+      var t=c.leftAt?Date.now()-c.leftAt:MIN_AWAY;c.leftAt=0;
+      if(c.needAway&&t<MIN_AWAY){
+        c.needAway=false;resetIdle(c);
+        say("Você voltou rápido demais. Conclua a inscrição no YouTube e depois volte aqui para confirmar.",true);
+        return;
+      }
+      c.needAway=false;start(c);
+    }
   })}
   document.addEventListener("visibilitychange",function(){document.hidden?left():back()});
   window.addEventListener("blur",left);
@@ -343,39 +395,55 @@ h1{font-size:1.85rem}
 
   chans.forEach(function(c){
     c.stage=1;
-    if(saved[c.key]){setOk(c)}
-    c.btn.addEventListener("click",function(){
+    c.btn.addEventListener("click",function(e){
+      if(!e.isTrusted){say("Clique de verdade no botão para continuar.",true);return}
       if(c.mode!=="idle"&&c.mode!=="retry")return;
-      var prev=c.mode;
+      c.prev=c.mode;c.needAway=true;c.leftAt=0;
       window.open(c.url,"_blank","noopener");
       waiting(c);
       setTimeout(function(){
         if(c.mode==="away"&&!c.left){
-          c.mode=prev;c.btn.disabled=false;c.btn.textContent=prev==="idle"?"Inscrever-se":"Tentar novamente";
-          c.sm.textContent=prev==="idle"?"Toque em inscrever-se":"Não encontramos sua inscrição.";c.el.className=prev==="idle"?"ch":"ch wait";
+          c.needAway=false;resetIdle(c);
           say("O canal não abriu. Permita pop-ups e tente novamente.",true);
         }
       },3000);
     });
   });
 
-  // lê o ?link= uma vez, guarda só na aba (sessionStorage) e limpa o endereço da barra
-  var LINK=(function(){
-    var r=new URLSearchParams(location.search).get("link"),k="pt_link";
-    try{if(r){sessionStorage.setItem(k,r)}else{r=sessionStorage.getItem(k)}}catch(e){}
+  // Lê o ?link= uma vez, nunca o guarda em texto puro, e limpa o endereço da barra.
+  // Na aba fica apenas uma versão embaralhada (chave aleatória por sessão); o link real só é montado no instante do redirecionamento.
+  function xor(s,k){var o="";for(var i=0;i<s.length;i++)o+=String.fromCharCode(s.charCodeAt(i)^k.charCodeAt(i%k.length));return o}
+  var LINK_E=null,LINK_K=null;
+  (function(){
+    var r=null;
+    try{r=new URLSearchParams(location.search).get("link")}catch(e){}
+    try{sessionStorage.removeItem("pt_link")}catch(e){}
+    if(r){
+      try{
+        var u=new URL(r);
+        if(u.protocol==="https:"){
+          LINK_K=rnd();LINK_E=btoa(xor(u.href,LINK_K));
+          try{sessionStorage.setItem("pt_k",LINK_K);sessionStorage.setItem("pt_l",LINK_E)}catch(e){}
+        }
+      }catch(e){}
+    }else{
+      try{LINK_K=sessionStorage.getItem("pt_k");LINK_E=sessionStorage.getItem("pt_l")}catch(e){}
+    }
+    r=null;
     if(location.search&&window.history&&history.replaceState){
       try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
     }
-    return r;
   })();
   function target(){
-    if(!LINK)return FALLBACK;
-    try{var u=new URL(LINK);return u.protocol==="https:"?u.href:FALLBACK}catch(e){return FALLBACK}
+    var fb=FALLBACK_P.join("");
+    if(!LINK_E||!LINK_K)return fb;
+    try{var u=new URL(xor(atob(LINK_E),LINK_K));return u.protocol==="https:"?u.href:fb}catch(e){return fb}
   }
-  dl.addEventListener("click",function(){
-    if(!saved.passitech)return;
+  dl.addEventListener("click",function(e){
+    if(!e.isTrusted){say("Clique de verdade no botão para continuar.",true);return}
+    if(!isUnlocked()){enforce();say("Inscreva-se no canal e confirme acima para liberar o download.",true);return}
     dl.disabled=true;dl.classList.remove("ready");dl.textContent="Redirecionando…";confetti();
-    setTimeout(function(){location.href=target()},1400);
+    setTimeout(function(){if(isUnlocked())location.href=target()},1400);
   });
 
   function confetti(){var c=$("cf"),k=["#2F86F0","#1553C7","#FFC20E","#E8262B","#FFFFFF","#5AA9FF"];
