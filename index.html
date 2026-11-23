@@ -57,6 +57,13 @@ h1{font:700 1.7rem/1.15 'Sora',sans-serif;letter-spacing:-.035em;margin-bottom:1
 .ch.wait{border-color:rgba(47,134,240,.65)}
 .ch.chk{border-color:rgba(255,194,14,.55)}
 .ch.ok{border-color:rgba(74,222,128,.55);background:rgba(74,222,128,.08)}
+
+/* Aviso "NÃO SAIA DA PÁGINA" (aparece só durante a contagem da verificação, nas duas etapas) */
+.ch{flex-wrap:wrap}
+.stay{display:none;flex:0 0 100%;align-items:center;justify-content:center;gap:8px;margin-top:2px;padding:9px 10px;border-radius:12px;font-weight:800;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#FFF1C2;background:rgba(255,194,14,.14);border:1px solid rgba(255,194,14,.6);animation:stayBlink 1s ease-in-out infinite}
+.ch.chk .stay{display:flex}
+@keyframes stayBlink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,194,14,.5)}50%{opacity:.55;box-shadow:0 0 14px 2px rgba(255,194,14,.55)}}
+
 .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#fff;flex:none;box-shadow:0 6px 16px -6px rgba(0,0,0,.5)}
 .ic svg{width:25px;height:25px;fill:#E8262B}
 .t{flex:1;min-width:0}.t b{display:block;font-size:1rem;font-weight:700}.t small{display:block;color:var(--mut);font-size:.8rem;margin-top:3px;line-height:1.4}
@@ -246,7 +253,9 @@ h1{font-size:1.85rem}
       <div class="ch" id="c1" data-key="passitech" data-url="https://www.youtube.com/@PASSITECH?sub_confirmation=1">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M19.6 3.2c-3.6-.25-11.6-.25-15.2 0C.5 3.5 0 5.8 0 12s.5 8.5 4.4 8.8c3.6.25 11.6.25 15.2 0 3.9-.27 4.4-2.6 4.4-8.8s-.5-8.5-4.4-8.8zM9 16V8l8 4-8 4z"/></svg></div>
         <div class="t"><b>Canal PassiTech</b><small>Toque em inscrever-se</small></div>
-        <div class="act"><button class="s1" type="button">Inscrever-se</button></div><div class="pb"></div>
+        <div class="act"><button class="s1" type="button">Inscrever-se</button></div>
+        <div class="stay" aria-hidden="true">⚠️ NÃO SAIA DA PÁGINA</div>
+        <div class="pb"></div>
       </div>
 
       <button class="dl" id="dl" type="button" disabled>🔒 Acesso bloqueado</button>
