@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030922">
+<link rel="icon" href="https://yt3.googleusercontent.com/NThF3F7HCCJJj45lWc8vOu-hv4bVlcr9KH00LAJZDVCvenYzcuvsz7FYb5-cFoJN2KQTsWgIgg=s160-c-k-c0x00ffffff-no-rj">
 <title>PassiTech | Acesso aos downloads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +62,7 @@ h1{font:700 1.7rem/1.15 'Sora',sans-serif;letter-spacing:-.035em;margin-bottom:1
 
 /* Aviso "NÃO SAIA DA PÁGINA" (aparece só durante a contagem da verificação, nas duas etapas) */
 .ch{flex-wrap:wrap}
-.stay{display:none;flex:0 0 100%;align-items:center;justify-content:center;gap:8px;margin-top:2px;padding:9px 10px;border-radius:12px;font-weight:800;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#FFF1C2;background:rgba(255,194,14,.14);border:1px solid rgba(255,194,14,.6);animation:stayBlink 1s ease-in-out infinite}
+.stay{display:none;flex:0 0 100%;align-items:center;justify-content:center;gap:8px;margin-top:2px;padding:7px 10px;border-radius:12px;font-weight:800;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:#FFF1C2;background:rgba(255,194,14,.14);border:1px solid rgba(255,194,14,.6);animation:stayBlink 1s ease-in-out infinite}
 .ch.chk .stay{display:flex}
 @keyframes stayBlink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,194,14,.5)}50%{opacity:.55;box-shadow:0 0 14px 2px rgba(255,194,14,.55)}}
 
@@ -126,11 +128,27 @@ button:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .vi{height:83px}
 .vi.out{animation:vOut .45s ease forwards}
 @keyframes vOut{to{opacity:0;transform:translateX(18px) scale(.97)}}
+
 .sk{height:81px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.1),rgba(255,255,255,.04));background-size:200% 100%;animation:shim 1.4s linear infinite}
 @keyframes shim{to{background-position:-200% 0}}
 .fa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:12px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.86rem;color:#fff;background:linear-gradient(135deg,var(--b),var(--bd));box-shadow:0 6px 18px -6px rgba(47,134,240,.7),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .2s}
 .fa:hover{transform:translateY(-2px)}
 .fn{margin-top:12px;text-align:center;font-size:.72rem;color:rgba(214,228,255,.55)}
+
+/* Painel da direita: vídeo em destaque no topo + atividade do canal embaixo */
+.feed{padding:0 0 18px;display:flex;flex-direction:column}
+.fv{flex:none;display:flex;flex-direction:column}
+.fv-th{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:27px 27px 0 0;overflow:hidden;background:rgba(255,255,255,.06);border-bottom:2px solid rgba(255,194,14,.8);box-shadow:0 12px 34px -14px rgba(255,194,14,.45)}
+.fv-th::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 38%);pointer-events:none}
+.fv-th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.fv-th:hover img{transform:scale(1.04)}
+.fv-tag{position:absolute;z-index:2;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:50px;font:800 .72rem/1 'Sora',sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#1A1400;background:linear-gradient(135deg,#FFD24A,var(--g));box-shadow:0 6px 18px -6px rgba(0,0,0,.6)}
+.fv-th i{position:absolute;z-index:2;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(232,38,43,.95);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 0 6px rgba(232,38,43,.25)}
+.fv-th i svg{width:26px;height:26px;fill:#fff;margin-left:3px}
+.fv-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;padding:12px 20px 0}
+.fv-msg{flex:1 1 150px;font-size:.9rem;font-weight:700;line-height:1.35;color:#FFE08A}
+.fv-share{flex:none;padding:9px 16px;font-size:.82rem;background:linear-gradient(135deg,var(--b),var(--bd));box-shadow:0 6px 18px -6px rgba(47,134,240,.7),inset 0 1px 0 rgba(255,255,255,.3)}
+.fb{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:16px 20px 0}
 
 .trust{margin-top:8px;padding-top:26px;border-top:1px solid var(--line)}
 .tg{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
@@ -175,10 +193,10 @@ h1{font-size:1.85rem}
 @media(max-width:600px){.alert{padding:12px 13px;gap:10px;font-size:.8rem;border-radius:16px}.alert .al-ic{width:30px;height:30px;font-size:.95rem}}
 
 /* Layout responsivo */
-@media(max-width:1180px){.main{grid-template-columns:1fr;gap:32px;padding:28px 0}.hero,.card,.feed{grid-column:1}.hero{grid-row:auto;max-width:520px}.feed{grid-row:auto;max-width:520px;justify-self:center}.n{font-size:clamp(3.2rem,12vw,5.6rem)}.card{max-width:520px;width:100%;margin:0 auto}.top{margin-bottom:0}}
-@media(max-width:600px){.page{padding:18px 14px 24px}.reel{--w:200px;--h:112px;--gap:12px}.reel img{border-radius:12px}.card{padding:26px 16px 20px;border-radius:24px}.feed{padding:22px 14px 16px;border-radius:24px}h1{font-size:1.45rem}.ch{flex-wrap:wrap}.act{width:100%}.act button{width:100%}.tick{margin:0 auto}.official{font-size:.74rem;padding:6px 11px}.vi .th{width:96px;height:54px}}
+@media(max-width:1279px){.main{grid-template-columns:1fr;gap:32px;padding:28px 0}.hero,.card,.feed{grid-column:1}.hero{grid-row:auto;max-width:520px}.feed{grid-row:auto;max-width:520px;justify-self:center}.n{font-size:clamp(3.2rem,12vw,5.6rem)}.card{max-width:520px;width:100%;margin:0 auto}.top{margin-bottom:0}}
+@media(max-width:600px){.page{padding:18px 14px 24px}.reel{--w:200px;--h:112px;--gap:12px}.reel img{border-radius:12px}.card{padding:26px 16px 20px;border-radius:24px}.feed{border-radius:24px}.fv-th{border-radius:23px 23px 0 0}.fv-row{padding:12px 14px 0}.fb{padding:16px 14px 0}h1{font-size:1.45rem}.ch{flex-wrap:wrap}.act{width:100%}.act button{width:100%}.tick{margin:0 auto}.official{font-size:.74rem;padding:6px 11px}.vi .th{width:96px;height:54px}}
 /* Celular/tablet: título, cartão de download e só depois o contador e as atividades */
-@media(max-width:1180px){
+@media(max-width:1279px){
   .main{gap:18px}
   .hero{display:contents}
   .alert{order:0;grid-column:1;justify-self:center;max-width:520px;margin-bottom:0}
@@ -189,30 +207,73 @@ h1{font-size:1.85rem}
   .stat{order:4;grid-column:1;justify-self:center;width:100%;max-width:520px}
   .feed{order:5}
 }
-/* Desktop: tudo cabe em uma tela, sem rolagem (em telas muito baixas a página rola normalmente) */
-@media(min-width:1181px){
+/* Desktop */
+@media(min-width:1280px){
   .main{padding:clamp(8px,2vh,28px) 0}
   .trust{padding-top:clamp(10px,2vh,22px);margin-top:0}
   .legal{margin-top:clamp(8px,1.6vh,18px)}
 }
-@media(min-width:1181px) and (min-height:640px){
+@media(min-width:1280px) and (min-height:640px){
   html,body{height:100dvh;overflow:hidden}
   .page{height:100dvh;min-height:0;padding:20px 28px 16px}
   .main{min-height:0}
+  .fs,.fn{display:none}
 }
-@media(min-width:1181px) and (max-height:900px){
+@media(min-width:1280px) and (max-height:900px){
   .tg{display:none}.trust{padding-top:12px}
   .card{padding:24px 24px 16px}.sub{margin-bottom:16px}.ch{margin-bottom:10px}.foot{margin-top:12px;padding-top:12px}
-  .feed{padding:20px 18px 14px}.fs,.fn{display:none}.fh{margin-bottom:12px}
+  .fh{margin-bottom:12px}
   .hero p{margin-bottom:16px}
   .lock-note{margin-top:10px;padding:9px 12px;font-size:.82rem}
   .alert{margin-bottom:14px;padding:10px 13px;font-size:.78rem;line-height:1.42}.alert .al-tx p+p{margin-top:6px}
 }
-@media(min-width:1181px) and (max-height:700px){
-  .vi:nth-child(4){display:none}.fst{display:none!important}
+@media(min-width:1280px) and (max-height:700px){
+  .fst{display:none!important}
   #logo{width:44px;height:44px}.legal{display:none}
 }
+/* Colunas em notebooks (1280 a 1439px) */
+@media(min-width:1280px) and (max-width:1439px){.main{grid-template-columns:minmax(0,1fr) 460px minmax(0,1fr);gap:28px}}
+/* Telas baixas: compacta o conteúdo para tudo caber sem rolagem */
+@media(min-width:1280px) and (max-height:820px){
+  .hero h2{font-size:1.3rem;margin-bottom:8px}
+  .hero p{margin-bottom:12px;font-size:.9rem;line-height:1.45}
+  .stat{padding:14px 16px;border-radius:24px}
+  .n{font-size:clamp(2.2rem,3.4vw,3.2rem)}
+  .stat .l{font-size:.95rem;margin-top:2px}.stat .l span{font-size:.8rem}
+  .free{margin-bottom:10px}h1{font-size:1.55rem;margin-bottom:6px}
+  .sub{font-size:.9rem;line-height:1.5;margin-bottom:12px}
+  .card{padding:20px 22px 14px}
+  .safe{margin-top:10px}.msg{margin-top:6px;min-height:16px}
+}
+@media(min-width:1280px) and (max-height:700px){
+  .free,.hero p,.stat .l span{display:none}.cnt{margin-bottom:10px}
+  .alert{font-size:.74rem}
+}
+/* Celular: cabeçalho compacto */
+@media(max-width:600px){#logo{width:44px;height:44px}.top{gap:10px}.bn{font-size:1.05rem}.official{font-size:.68rem;padding:5px 9px;white-space:nowrap}}
+/* Lista de atividades: 3 vídeos embaixo do destaque na maioria das telas (regras fixas por altura da janela) */
+@media(min-width:1280px) and (min-height:901px) and (max-height:1000px){.tg{display:none}.trust{padding-top:12px}}
+@media(min-width:1280px) and (min-height:640px) and (max-height:879px){.fv-th{aspect-ratio:5/2}.fv-row{padding-top:8px}.fb{padding-top:12px}}
+@media(min-width:1280px) and (min-height:640px) and (max-height:679px){.vi:nth-child(n+2){display:none}}
+@media(min-width:1280px) and (min-height:680px) and (max-height:799px){.vi:nth-child(n+3){display:none}}
+@media(min-width:1280px) and (min-height:800px) and (max-height:1074px){.vi:nth-child(n+4){display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.tick path{stroke-dashoffset:0}.reel .row{animation:none!important}}
+
+/* ===== CORREÇÃO: rodapé sempre visível ===== */
+@media(min-width:1280px){
+  html,body{height:auto!important;min-height:100dvh;overflow-y:auto!important;overflow-x:hidden}
+  .page{height:auto!important;min-height:100dvh}
+  .main{flex:1 0 auto}
+  .trust{display:block!important;margin-top:8px;padding-top:14px}
+  .tg{display:grid!important;grid-template-columns:repeat(4,1fr);gap:14px}
+  .legal{display:flex!important;margin-top:12px}
+}
+@media(min-width:1280px) and (max-height:900px){
+  .ti{align-items:center}
+  .ti svg{width:32px;height:32px;padding:7px}
+  .ti b{margin:0}
+  .ti span{display:none}
+}
 </style>
 </head>
 <body>
@@ -270,24 +331,38 @@ h1{font-size:1.85rem}
     </main>
 
     <aside class="feed" id="feed" aria-label="Atividade do canal PassiTech">
-      <div class="fh">
-        <h3>Atividade do canal</h3>
-        <span class="tagl"><i class="live"></i>Dados reais</span>
-      </div>
-      <p class="fs">Direto do YouTube: confira os vídeos mais recentes da PassiTech.</p>
-
-      <div class="fst" id="fst" hidden>
-        <div><b id="fsub">–</b><span>inscritos</span></div>
-        <div><b id="fvid">–</b><span>vídeos</span></div>
-        <div><b id="fview">–</b><span>visualizações</span></div>
-      </div>
-
-      <div class="fl" id="fl" aria-live="polite">
-        <div class="sk"></div><div class="sk"></div><div class="sk"></div>
+      <div class="fv">
+        <a class="fv-th" href="https://youtu.be/uMMpI4ILV-o" target="_blank" rel="noopener noreferrer" aria-label="Assistir ao vídeo em destaque no YouTube">
+          <img src="https://i.ytimg.com/vi/uMMpI4ILV-o/maxresdefault.jpg" alt="" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='https://i.ytimg.com/vi/uMMpI4ILV-o/hqdefault.jpg'}">
+          <span class="fv-tag">🔥 Vídeo em destaque</span>
+          <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></i>
+        </a>
+        <div class="fv-row">
+          <span class="fv-msg">Compartilhe para seu amigo também!</span>
+          <button class="fv-share s1" type="button">📤 Compartilhar</button>
+        </div>
       </div>
 
-      <a class="fa" href="https://www.youtube.com/@PASSITECH" target="_blank" rel="noopener noreferrer">Ver canal no YouTube</a>
-      <p class="fn">Informações lidas diretamente do YouTube.</p>
+      <div class="fb">
+        <div class="fh">
+          <h3>Atividade do canal</h3>
+          <span class="tagl"><i class="live"></i>Dados reais</span>
+        </div>
+        <p class="fs">Direto do YouTube: confira os vídeos mais recentes da PassiTech.</p>
+
+        <div class="fst" id="fst" hidden>
+          <div><b id="fsub">–</b><span>inscritos</span></div>
+          <div><b id="fvid">–</b><span>vídeos</span></div>
+          <div><b id="fview">–</b><span>visualizações</span></div>
+        </div>
+
+        <div class="fl" id="fl" aria-live="polite">
+          <div class="sk"></div><div class="sk"></div><div class="sk"></div>
+        </div>
+
+        <a class="fa" href="https://www.youtube.com/@PASSITECH" target="_blank" rel="noopener noreferrer">Ver canal no YouTube</a>
+        <p class="fn">Informações lidas diretamente do YouTube.</p>
+      </div>
     </aside>
   </div>
   <footer class="trust">
@@ -524,6 +599,7 @@ h1{font-size:1.85rem}
   (function(){
     var YT_KEY="";
     var YT_HANDLE="PASSITECH";
+    var FEATURED="uMMpI4ILV-o";
     var VIDEOS=["83SNKcImYlA","r2uNZUZCRSE","8RnvrXe8774","_Wvfz_bxZh8","XjFpBBbOAIA","O0CyY_R-db0","uMMpI4ILV-o"];
     var SHOW=4, SWAP_MS=3500, timer=null, pool=[], slots=[], nextIdx=0, slotPtr=0;
     var list=$("fl"),stats=$("fst");
@@ -534,8 +610,8 @@ h1{font-size:1.85rem}
       var u=[["year",31536000],["month",2592000],["week",604800],["day",86400],["hour",3600],["minute",60]];
       for(var i=0;i<u.length;i++){if(Math.abs(s)>=u[i][1]||i===u.length-1)return rtf.format(Math.round(s/u[i][1]),u[i][0])}
     }
-    function item(id,title,sub,i){
-      var a=document.createElement("a");a.className="vi";a.href="https://www.youtube.com/watch?v="+encodeURIComponent(id);
+    function item(id,title,sub,i,fresh){
+      var a=document.createElement("a");a.className="vi"+(fresh?" fresh":"");a.setAttribute("data-id",id);a.href="https://www.youtube.com/watch?v="+encodeURIComponent(id);
       a.target="_blank";a.rel="noopener noreferrer";a.style.animationDelay=(i*0.08)+"s";
       var th=document.createElement("div");th.className="th";
       var im=new Image();im.alt="";im.loading="lazy";im.src="https://i.ytimg.com/vi/"+id+"/mqdefault.jpg";
@@ -548,8 +624,14 @@ h1{font-size:1.85rem}
     }
     function swap(){
       if(document.hidden||!slots.length)return;
-      var i=slotPtr%slots.length;slotPtr++;
-      var old=slots[i],r=pool[nextIdx%pool.length];nextIdx++;
+      var vis=[];slots.forEach(function(el,k){if(el.offsetParent!==null)vis.push(k)});
+      if(!vis.length)return;
+      var i=vis[slotPtr%vis.length];slotPtr++;
+      var shown=slots.map(function(el){return el.getAttribute("data-id")});
+      var r=null;
+      for(var t=0;t<pool.length;t++){var c=pool[nextIdx%pool.length];nextIdx++;if(shown.indexOf(c.id)<0){r=c;break}}
+      if(!r)return;
+      var old=slots[i];
       old.classList.add("out");
       setTimeout(function(){
         var neu=item(r.id,r.title,r.sub,0);
@@ -557,6 +639,7 @@ h1{font-size:1.85rem}
       },450);
     }
     function render(rows){
+      rows=rows.filter(function(r){return r.id!==FEATURED});
       clearInterval(timer);list.innerHTML="";pool=rows;slots=[];slotPtr=0;
       var n=Math.min(SHOW,rows.length);
       for(var i=0;i<n;i++){var el=item(rows[i].id,rows[i].title,rows[i].sub,i);slots.push(el);list.appendChild(el)}
@@ -623,6 +706,19 @@ h1{font-size:1.85rem}
       reel.appendChild(row);
     }
     setTimeout(function(){reel.classList.add("on")},2500);
+  })();
+
+  // botão "Compartilhar" do vídeo em destaque
+  (function(){
+    var b=document.querySelector(".fv-share");if(!b)return;
+    var U="https://youtu.be/uMMpI4ILV-o",T="Vídeo em destaque da PassiTech",L=b.textContent,tm=0;
+    function flash(t){b.textContent=t;clearTimeout(tm);tm=setTimeout(function(){b.textContent=L},2200)}
+    b.addEventListener("click",function(){
+      if(navigator.share){navigator.share({title:T,text:T,url:U}).catch(function(){});return}
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(U).then(function(){flash("✅ Link copiado!")},function(){flash("Copie: "+U)});
+      }else{flash("Copie: "+U)}
+    });
   })();
 
   counts();
